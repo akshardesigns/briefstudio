@@ -855,6 +855,224 @@ body {
   .panel-right { min-height: 50vh; }
   .preview-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* ── EXPORT MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 560px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  overflow: hidden;
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-header-left { display: flex; align-items: center; gap: 12px; }
+.modal-check {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(52,211,153,0.12);
+  border: 1px solid rgba(52,211,153,0.35);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; color: var(--green); flex-shrink: 0;
+}
+.modal-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem; font-weight: 700;
+  color: var(--text-primary); letter-spacing: -0.01em;
+}
+.modal-subtitle {
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--green); margin-top: 3px;
+  display: flex; align-items: center; gap: 6px;
+}
+.modal-subtitle-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  animation: pulse-dot 1.5s infinite;
+  display: inline-block;
+}
+.modal-close {
+  width: 28px; height: 28px; border-radius: 8px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; transition: all 0.15s; flex-shrink: 0;
+  line-height: 1;
+}
+.modal-close:hover { border-color: var(--red); color: var(--red); }
+
+/* 4-step flow */
+.modal-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 20px 20px 16px;
+  gap: 4px;
+  position: relative;
+}
+.modal-steps::after {
+  content: '';
+  position: absolute;
+  top: calc(20px + 22px);
+  left: calc(12.5% + 22px);
+  right: calc(12.5% + 22px);
+  height: 1px;
+  background: var(--border-2);
+}
+.modal-step {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  position: relative; z-index: 1;
+}
+.step-icon-box {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--surface-2); border: 1px solid var(--border-2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; position: relative; transition: all 0.2s;
+}
+.step-icon-box.active {
+  background: rgba(200,241,53,0.1);
+  border-color: rgba(200,241,53,0.4);
+}
+.step-num-badge {
+  position: absolute; top: -7px; left: -7px;
+  width: 17px; height: 17px; border-radius: 50%;
+  background: var(--surface-3); border: 1px solid var(--border-2);
+  font-size: 0.6rem; font-weight: 700; color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.step-num-badge.active {
+  background: var(--accent); color: #0A0A0F; border-color: var(--accent);
+}
+.step-name {
+  font-size: 0.68rem; font-weight: 600;
+  color: var(--text-muted); text-align: center; line-height: 1.3;
+}
+.step-name.active { color: var(--text-secondary); }
+.step-sep {
+  position: absolute; right: -6px; top: 21px;
+  color: var(--border-2); font-size: 0.65rem; z-index: 2;
+}
+
+/* Detail box */
+.modal-detail {
+  margin: 0 16px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px;
+}
+.modal-detail-label {
+  font-size: 0.63rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 5px;
+}
+.modal-detail-label::before { content: '·'; font-size: 1.2rem; line-height: 0; }
+.modal-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.modal-list li {
+  display: flex; align-items: baseline; gap: 10px;
+  font-size: 0.76rem; color: var(--text-secondary); line-height: 1.4;
+}
+.modal-list .li-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; color: var(--text-muted); flex-shrink: 0; width: 14px;
+}
+.modal-list strong { color: var(--text-primary); font-weight: 600; }
+.modal-list code {
+  background: var(--surface-3); border: 1px solid var(--border-2);
+  border-radius: 4px; padding: 1px 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; color: var(--accent);
+}
+
+/* GPT URL row */
+.modal-gpt-row {
+  margin: 0 16px 16px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.modal-gpt-lbl {
+  font-size: 0.65rem; color: var(--text-muted);
+  white-space: nowrap; font-weight: 600; letter-spacing: 0.04em;
+}
+.modal-gpt-input {
+  flex: 1; background: none; border: none; outline: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; color: var(--accent);
+}
+.modal-gpt-input::placeholder { color: var(--text-muted); }
+.modal-gpt-save {
+  padding: 4px 10px; border-radius: 6px;
+  border: 1px solid rgba(200,241,53,0.3);
+  background: var(--accent-dim); color: var(--accent);
+  font-size: 0.68rem; font-weight: 600; cursor: pointer;
+  font-family: 'Inter', sans-serif; transition: all 0.15s;
+  white-space: nowrap;
+}
+.modal-gpt-save:hover { background: rgba(200,241,53,0.2); }
+
+/* Footer */
+.modal-footer {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px; border-top: 1px solid var(--border); gap: 8px;
+}
+.btn-dismiss {
+  padding: 8px 14px; border-radius: 9px;
+  border: 1px solid var(--border-2); background: transparent;
+  color: var(--text-muted); font-size: 0.76rem; font-weight: 500;
+  cursor: pointer; transition: all 0.15s; font-family: 'Inter', sans-serif;
+}
+.btn-dismiss:hover { color: var(--text-primary); }
+.modal-footer-right { display: flex; gap: 8px; }
+.btn-open-chatgpt {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 9px;
+  border: 1px solid rgba(77,199,128,0.3);
+  background: rgba(77,199,128,0.08); color: #4dc780;
+  font-size: 0.76rem; font-weight: 600; cursor: pointer;
+  transition: all 0.15s; font-family: 'Inter', sans-serif; white-space: nowrap;
+}
+.btn-open-chatgpt:hover { background: rgba(77,199,128,0.15); }
+.btn-open-gpt {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 9px;
+  border: none; background: var(--accent); color: #0A0A0F;
+  font-size: 0.76rem; font-weight: 700; cursor: pointer;
+  transition: all 0.15s; font-family: 'Space Grotesk', sans-serif; white-space: nowrap;
+}
+.btn-open-gpt:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(200,241,53,0.3); }
+.btn-open-gpt:disabled { opacity: 0.4; pointer-events: none; }
 </style>
 </head>
 <body>
@@ -1422,6 +1640,68 @@ body {
 </div>
 
 <!-- Toast Container -->
+<!-- Export Modal -->
+<div class="modal-overlay" id="export_modal" onclick="handleModalOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-check">✓</div>
+        <div>
+          <div class="modal-title">Brief siap dieksekusi</div>
+          <div class="modal-subtitle">
+            <span class="modal-subtitle-dot"></span>
+            COPIED TO CLIPBOARD · READY TO PASTE
+          </div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-steps">
+      <div class="modal-step">
+        <div class="step-icon-box active"><span class="step-num-badge active">01</span>📋</div>
+        <div class="step-name active">Copy Brief</div>
+        <span class="step-sep">›</span>
+      </div>
+      <div class="modal-step">
+        <div class="step-icon-box"><span class="step-num-badge">02</span>🤖</div>
+        <div class="step-name">Buka GPT</div>
+        <span class="step-sep">›</span>
+      </div>
+      <div class="modal-step">
+        <div class="step-icon-box"><span class="step-num-badge">03</span>🖼️</div>
+        <div class="step-name">Mode Visual</div>
+        <span class="step-sep">›</span>
+      </div>
+      <div class="modal-step">
+        <div class="step-icon-box"><span class="step-num-badge">04</span>⚡</div>
+        <div class="step-name">Eksekusi</div>
+      </div>
+    </div>
+    <div class="modal-detail">
+      <div class="modal-detail-label">DETAIL ALUR</div>
+      <ul class="modal-list">
+        <li><span class="li-num">1.</span><span>Klik tombol <strong>Buka AdsBrief AI</strong> di bawah</span></li>
+        <li><span class="li-num">2.</span><span>Aktifkan mode <strong>image generation</strong> di ChatGPT (icon gambar)</span></li>
+        <li><span class="li-num">3.</span><span>Upload foto produk yang ingin diolah AI <strong>(opsional)</strong></span></li>
+        <li><span class="li-num">4.</span><span>Tekan <code>Ctrl+V</code> — prompt sudah otomatis tersalin</span></li>
+        <li><span class="li-num">5.</span><span>Kirim pesan, biarkan AI render desainmu</span></li>
+      </ul>
+    </div>
+    <div class="modal-gpt-row">
+      <span class="modal-gpt-lbl">GPT URL</span>
+      <input class="modal-gpt-input" id="custom_gpt_url" type="text" placeholder="chatgpt.com/g/g-XXXXXXXX-adsbrief-ai" value="https://chatgpt.com/g/g-6a3fe2f7e8008191b5a089cb997ff36e-autoads">
+      <button class="modal-gpt-save" onclick="saveGptUrl()">Simpan</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-dismiss" onclick="closeModal()">Selesai</button>
+      <div class="modal-footer-right">
+        <button class="btn-open-chatgpt" onclick="openChatGPTPlain()">Buka ChatGPT ↗</button>
+        <button class="btn-open-gpt" id="btn_open_custom_gpt" onclick="openCustomGPT()">✦ Buka AdsBrief AI ↗</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast-container" id="toast_container"></div>
 
 <script>
@@ -1763,15 +2043,94 @@ function copyJSON() {
   });
 }
 
+// ─── Modal & ChatGPT Export ───
+let gptUrl = localStorage.getItem('adsbrief_gpt_url') || '';
+
+function buildPrompt() {
+  return `Kamu adalah AI Art Director dan Commercial Graphic Designer profesional.\n\nGenerate sebuah banner iklan berdasarkan brief JSON berikut. Ikuti SEMUA spesifikasi secara ketat.\n\n${JSON.stringify(currentJSON, null, 2)}\n\nOutput:\n1. Deskripsi visual banner (layout, warna, tipografi)\n2. Prompt DALL-E siap pakai\n3. Brand compliance checklist`;
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+}
+
+function copyToClipboard(text) {
+  return navigator.clipboard && navigator.clipboard.writeText
+    ? navigator.clipboard.writeText(text).catch(() => { fallbackCopy(text); })
+    : Promise.resolve(fallbackCopy(text));
+}
+
 function exportToChatGPT() {
   if (!currentJSON) { showToast('Generate brief dulu!', 'error'); return; }
-  const prompt = `Kamu adalah AI Art Director. Generate sebuah banner iklan profesional berdasarkan brief JSON berikut:\n\n${JSON.stringify(currentJSON, null, 2)}\n\nBuat dalam format visual yang sesuai dengan semua spesifikasi di atas.`;
-  navigator.clipboard.writeText(prompt).then(() => {
-    window.open('https://chat.openai.com/', '_blank');
-    showToast('Prompt di-copy! Paste di ChatGPT.', 'success');
-  });
   toggleExport();
+  const prompt = buildPrompt();
+  copyToClipboard(prompt).then(() => {
+    // Restore GPT URL from storage
+    const saved = localStorage.getItem('adsbrief_gpt_url') || 'https://chatgpt.com/g/g-6a3fe2f7e8008191b5a089cb997ff36e-autoads';
+    const input = document.getElementById('custom_gpt_url');
+    if (input) input.value = saved;
+    const gpBtn = document.getElementById('btn_open_custom_gpt');
+    if (gpBtn) gpBtn.disabled = !saved;
+    // Open modal
+    document.getElementById('export_modal').classList.add('open');
+  });
 }
+
+function openModal() {
+  document.getElementById('export_modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('export_modal').classList.remove('open');
+}
+
+function handleModalOverlayClick(e) {
+  if (e.target === document.getElementById('export_modal')) closeModal();
+}
+
+function openChatGPTPlain() {
+  closeModal();
+  setTimeout(() => window.open('https://chatgpt.com/', '_blank'), 100);
+}
+
+function openCustomGPT() {
+  const url = document.getElementById('custom_gpt_url').value.trim();
+  if (!url) { showToast('Masukkan URL Custom GPT dulu!', 'error'); return; }
+  const full = url.startsWith('http') ? url : 'https://' + url;
+  closeModal();
+  setTimeout(() => window.open(full, '_blank'), 100);
+}
+
+function saveGptUrl() {
+  const val = document.getElementById('custom_gpt_url').value.trim();
+  if (!val) { showToast('URL tidak boleh kosong!', 'error'); return; }
+  localStorage.setItem('adsbrief_gpt_url', val);
+  const btn = document.getElementById('btn_open_custom_gpt');
+  if (btn) btn.disabled = false;
+  showToast('✓ URL Custom GPT tersimpan!', 'success');
+}
+
+// Load saved GPT URL on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('adsbrief_gpt_url') || 'https://chatgpt.com/g/g-6a3fe2f7e8008191b5a089cb997ff36e-autoads';
+  const input = document.getElementById('custom_gpt_url');
+  if (input && saved) {
+    input.value = saved;
+    const btn = document.getElementById('btn_open_custom_gpt');
+    if (btn) btn.disabled = false;
+  }
+});
+
+// Close modal on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
 
 function exportToMidjourney() {
   if (!currentJSON) { showToast('Generate brief dulu!', 'error'); return; }
