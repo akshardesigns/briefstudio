@@ -7,2201 +7,1025 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --canvas:#0A0A0F;--surface:#12121A;--s2:#1C1C28;--s3:#252535;
+  --border:#2A2A3E;--border2:#383852;
+  --accent:#C8F135;--adim:rgba(200,241,53,0.12);--aglow:rgba(200,241,53,0.25);
+  --tp:#F0EDE6;--ts:#8888A8;--tm:#555568;
+  --red:#FF4757;--green:#34D399;--orange:#FB923C;--purple:#A78BFA;--blue:#5B8DEF;
+  --jk:#C8F135;--js:#FB923C;--jn:#5B8DEF;--jb:#A78BFA;
+}
+html{font-size:14px}
+body{font-family:'Inter',sans-serif;background:var(--canvas);color:var(--tp);min-height:100vh;overflow-x:hidden}
 
-:root {
-  --canvas: #0A0A0F;
-  --surface: #12121A;
-  --surface-2: #1C1C28;
-  --surface-3: #252535;
-  --border: #2A2A3E;
-  --border-2: #383852;
-  --accent: #C8F135;
-  --accent-dim: rgba(200,241,53,0.12);
-  --accent-glow: rgba(200,241,53,0.25);
-  --text-primary: #F0EDE6;
-  --text-secondary: #8888A8;
-  --text-muted: #555568;
-  --red: #FF4757;
-  --blue: #5B8DEF;
-  --purple: #A78BFA;
-  --orange: #FB923C;
-  --green: #34D399;
-  --json-key: #C8F135;
-  --json-string: #FB923C;
-  --json-number: #5B8DEF;
-  --json-bool: #A78BFA;
-  --json-null: #8888A8;
-}
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:52px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:-0.02em}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--aglow)}
+.logo span{color:var(--accent)}
+.badge{padding:3px 10px;border-radius:99px;font-size:0.7rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;background:var(--adim);color:var(--accent);border:1px solid rgba(200,241,53,0.3)}
 
-html { font-size: 14px; }
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--canvas);
-  color: var(--text-primary);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+/* LAYOUT */
+.studio{display:grid;grid-template-columns:460px 1fr;height:calc(100vh - 52px)}
 
-/* ── TOPBAR ── */
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  height: 52px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  font-size: 1.05rem;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-}
-.logo-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent-glow);
-}
-.logo span { color: var(--accent); }
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.badge {
-  padding: 3px 10px;
-  border-radius: 99px;
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.badge-beta {
-  background: var(--accent-dim);
-  color: var(--accent);
-  border: 1px solid rgba(200,241,53,0.3);
-}
-.btn-sm {
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 0.78rem;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid var(--border-2);
-  background: transparent;
-  color: var(--text-secondary);
-  transition: all 0.15s;
-}
-.btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+/* LEFT PANEL */
+.panel-left{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
+.panel-left::-webkit-scrollbar{width:3px}
+.panel-left::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
 
-/* ── MAIN LAYOUT ── */
-.studio {
-  display: grid;
-  grid-template-columns: 480px 1fr;
-  height: calc(100vh - 52px);
-}
+/* Tab nav */
+.tab-nav{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{padding:11px 14px;font-size:0.74rem;font-weight:500;color:var(--tm);border:none;background:transparent;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.15s;display:flex;align-items:center;gap:5px}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-btn:hover:not(.active){color:var(--tp)}
 
-/* ── LEFT PANEL ── */
-.panel-left {
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-.panel-left::-webkit-scrollbar { width: 4px; }
-.panel-left::-webkit-scrollbar-track { background: transparent; }
-.panel-left::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 99px; }
+/* Form */
+.form-section{display:none;padding:18px 20px;flex:1}
+.form-section.active{display:block}
+.sec-label{font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--tm);margin-bottom:12px;margin-top:4px}
+.field{margin-bottom:16px}
+.field-label{font-size:0.74rem;font-weight:500;color:var(--ts);margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
+.field-hint{font-size:0.66rem;color:var(--tm)}
+.fi{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:9px 12px;color:var(--tp);font-family:'Inter',sans-serif;font-size:0.8rem;outline:none;transition:all 0.15s;resize:none}
+.fi::placeholder{color:var(--tm)}
+.fi:focus{border-color:var(--accent);background:var(--s3);box-shadow:0 0 0 3px var(--adim)}
+.fi-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px 12px;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  background: var(--surface);
-  z-index: 10;
-}
-.section-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-.step-indicator {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
-.step-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--border-2);
-  transition: all 0.2s;
-}
-.step-dot.active { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
-.step-dot.done { background: var(--green); }
+/* Color row */
+.color-row{display:flex;align-items:center;gap:8px}
+.swatch{width:34px;height:34px;border-radius:7px;border:1px solid var(--border2);cursor:pointer;overflow:hidden;flex-shrink:0}
+.swatch input[type=color]{width:200%;height:200%;margin:-50%;cursor:pointer;border:none;background:none}
 
-/* Tab Nav */
-.tab-nav {
-  display: flex;
-  gap: 0;
-  border-bottom: 1px solid var(--border);
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.tab-nav::-webkit-scrollbar { display: none; }
-.tab-btn {
-  padding: 10px 16px;
-  font-size: 0.76rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: all 0.15s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-.tab-btn:hover:not(.active) { color: var(--text-primary); }
-.tab-icon { font-size: 0.9rem; }
+/* Toggles */
+.toggle-group{display:flex;gap:5px;flex-wrap:wrap}
+.tog{padding:5px 11px;border-radius:7px;font-size:0.72rem;font-weight:500;border:1px solid var(--border);background:transparent;color:var(--tm);cursor:pointer;transition:all 0.15s}
+.tog.on{background:var(--adim);border-color:rgba(200,241,53,0.4);color:var(--accent)}
+.tog:hover:not(.on){border-color:var(--border2);color:var(--tp)}
 
-/* Form Section */
-.form-section { display: none; padding: 20px; }
-.form-section.active { display: block; }
+/* Tags */
+.tags-wrap{display:flex;flex-wrap:wrap;gap:5px;padding:8px;background:var(--s2);border:1px solid var(--border);border-radius:9px;min-height:44px;cursor:text;transition:all 0.15s}
+.tags-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--adim)}
+.tag{display:flex;align-items:center;gap:4px;padding:3px 9px;background:var(--s3);border:1px solid var(--border2);border-radius:99px;font-size:0.7rem;color:var(--tp)}
+.tag-x{cursor:pointer;color:var(--tm);font-size:0.78rem;transition:color 0.1s}
+.tag-x:hover{color:var(--red)}
+.tag-input{background:none;border:none;outline:none;color:var(--tp);font-family:'Inter',sans-serif;font-size:0.78rem;min-width:70px;flex:1}
+.tag-input::placeholder{color:var(--tm)}
 
-.field-group { margin-bottom: 20px; }
-.field-label {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 6px;
-}
-.label-text {
-  font-size: 0.76rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  letter-spacing: 0.02em;
-}
-.label-hint {
-  font-size: 0.68rem;
-  color: var(--text-muted);
-}
-.field-input {
-  width: 100%;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 14px;
-  color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
-  font-size: 0.82rem;
-  outline: none;
-  transition: all 0.15s;
-  resize: none;
-}
-.field-input::placeholder { color: var(--text-muted); }
-.field-input:focus {
-  border-color: var(--accent);
-  background: var(--surface-3);
-  box-shadow: 0 0 0 3px var(--accent-dim);
-}
-.field-input-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-/* Color picker row */
-.color-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.color-swatch {
-  width: 36px; height: 36px;
-  border-radius: 8px;
-  border: 1px solid var(--border-2);
-  cursor: pointer;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.color-swatch input[type="color"] {
-  width: 200%;
-  height: 200%;
-  margin: -50%;
-  cursor: pointer;
-  border: none;
-  background: none;
-}
-.color-hex {
-  flex: 1;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-}
-
-/* Toggle group */
-.toggle-group {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.toggle-btn {
-  padding: 5px 12px;
-  border-radius: 8px;
-  font-size: 0.74rem;
-  font-weight: 500;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.toggle-btn.active {
-  background: var(--accent-dim);
-  border-color: rgba(200,241,53,0.4);
-  color: var(--accent);
-}
-.toggle-btn:hover:not(.active) { border-color: var(--border-2); color: var(--text-primary); }
-
-/* Tags input */
-.tags-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding: 10px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  min-height: 48px;
-  cursor: text;
-  transition: all 0.15s;
-}
-.tags-container:focus-within {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-dim);
-}
-.tag {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 10px;
-  background: var(--surface-3);
-  border: 1px solid var(--border-2);
-  border-radius: 99px;
-  font-size: 0.72rem;
-  color: var(--text-primary);
-}
-.tag-remove {
-  cursor: pointer;
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  line-height: 1;
-  transition: color 0.1s;
-}
-.tag-remove:hover { color: var(--red); }
-.tags-input {
-  background: none;
-  border: none;
-  outline: none;
-  color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  min-width: 80px;
-  flex: 1;
-}
-.tags-input::placeholder { color: var(--text-muted); }
+/* Aspect ratio */
+.ratio-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ratio-btn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 4px;border:1px solid var(--border);border-radius:9px;background:var(--s2);cursor:pointer;transition:all 0.15s;color:var(--tm)}
+.ratio-btn.on{border-color:rgba(200,241,53,0.4);background:var(--adim);color:var(--accent)}
+.ratio-btn:hover:not(.on){border-color:var(--border2);color:var(--tp)}
+.ratio-shape{border:2px solid currentColor;border-radius:2px;opacity:0.7}
+.ratio-lbl{font-size:0.65rem;font-weight:600;text-align:center;line-height:1.3}
 
 /* Divider */
-.field-divider {
-  border: none;
-  border-top: 1px solid var(--border);
-  margin: 20px 0;
-}
-.field-section-label {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 14px;
-}
-
-/* Aspect ratio selector */
-.ratio-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-.ratio-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 6px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface-2);
-  cursor: pointer;
-  transition: all 0.15s;
-  color: var(--text-muted);
-}
-.ratio-btn.active {
-  border-color: rgba(200,241,53,0.4);
-  background: var(--accent-dim);
-  color: var(--accent);
-}
-.ratio-btn:hover:not(.active) { border-color: var(--border-2); color: var(--text-primary); }
-.ratio-visual {
-  border: 2px solid currentColor;
-  border-radius: 3px;
-  opacity: 0.7;
-}
-.ratio-label { font-size: 0.68rem; font-weight: 500; text-align: center; }
+.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
 
 /* Slider */
-.slider-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.field-slider {
-  flex: 1;
-  -webkit-appearance: none;
-  height: 4px;
-  border-radius: 99px;
-  background: var(--border-2);
-  outline: none;
-}
-.field-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  background: var(--accent);
-  cursor: pointer;
-  box-shadow: 0 0 8px var(--accent-glow);
-}
-.slider-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.78rem;
-  color: var(--accent);
-  min-width: 32px;
-  text-align: right;
-}
+.slider-row{display:flex;align-items:center;gap:10px}
+.slider{flex:1;-webkit-appearance:none;height:4px;border-radius:99px;background:var(--border2);outline:none}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 8px var(--aglow)}
+.slider-val{font-family:'JetBrains Mono',monospace;font-size:0.76rem;color:var(--accent);min-width:36px;text-align:right}
 
-/* Generate button */
-.generate-bar {
-  padding: 16px 20px;
-  border-top: 1px solid var(--border);
-  background: var(--surface);
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-.btn-generate {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background: var(--accent);
-  color: #0A0A0F;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  font-size: 0.88rem;
-  letter-spacing: 0.01em;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-  overflow: hidden;
-}
-.btn-generate::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15) 100%);
-}
-.btn-generate:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(200,241,53,0.35);
-}
-.btn-generate:active { transform: translateY(0); }
-.btn-generate.loading { opacity: 0.7; pointer-events: none; }
-.btn-reset {
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid var(--border-2);
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.15s;
-  font-size: 1rem;
-}
-.btn-reset:hover { border-color: var(--red); color: var(--red); }
+/* Generate bar */
+.gen-bar{padding:14px 18px;border-top:1px solid var(--border);background:var(--surface);display:flex;gap:8px;align-items:center;flex-shrink:0}
+.btn-gen{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px;border-radius:9px;border:none;background:var(--accent);color:#0A0A0F;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.86rem;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.btn-gen::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.15) 100%)}
+.btn-gen:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(200,241,53,0.35)}
+.btn-gen:active{transform:translateY(0)}
+.btn-gen.loading{opacity:0.7;pointer-events:none}
+.btn-reset{padding:11px 13px;border-radius:9px;border:1px solid var(--border2);background:transparent;color:var(--tm);cursor:pointer;transition:all 0.15s;font-size:0.95rem}
+.btn-reset:hover{border-color:var(--red);color:var(--red)}
 
-/* ── RIGHT PANEL ── */
-.panel-right {
-  background: var(--canvas);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.output-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
-}
-.output-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-.output-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.72rem;
-  color: var(--text-muted);
-}
-.status-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--text-muted);
-}
-.status-dot.ready { background: var(--green); box-shadow: 0 0 6px var(--green); }
-.status-dot.generating {
-  background: var(--accent);
-  animation: pulse-dot 1s infinite;
-}
-@keyframes pulse-dot {
-  0%,100% { box-shadow: 0 0 4px var(--accent); opacity: 1; }
-  50% { box-shadow: 0 0 12px var(--accent); opacity: 0.6; }
-}
+/* RIGHT PANEL */
+.panel-right{background:var(--canvas);display:flex;flex-direction:column;overflow:hidden}
+.out-header{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--border);background:var(--surface)}
+.out-title{display:flex;align-items:center;gap:8px;font-family:'Space Grotesk',sans-serif;font-size:0.78rem;font-weight:600;color:var(--ts)}
+.out-status{display:flex;align-items:center;gap:5px;font-size:0.7rem;color:var(--tm)}
+.sdot{width:6px;height:6px;border-radius:50%;background:var(--tm)}
+.sdot.ready{background:var(--green);box-shadow:0 0 6px var(--green)}
+.sdot.gen{background:var(--accent);animation:pdot 1s infinite}
+@keyframes pdot{0%,100%{box-shadow:0 0 4px var(--accent);opacity:1}50%{box-shadow:0 0 12px var(--accent);opacity:0.5}}
+.out-actions{display:flex;gap:5px}
+.act-btn{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:7px;font-size:0.72rem;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--ts);transition:all 0.15s}
+.act-btn:hover{color:var(--tp);background:var(--s2)}
+.act-btn.primary{background:var(--adim);border-color:rgba(200,241,53,0.3);color:var(--accent)}
+.act-btn.primary:hover{background:rgba(200,241,53,0.18)}
 
-.output-actions {
-  display: flex;
-  gap: 6px;
-}
-.action-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.74rem;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid var(--border-2);
-  background: transparent;
-  color: var(--text-secondary);
-  transition: all 0.15s;
-}
-.action-btn:hover { border-color: var(--border-2); color: var(--text-primary); background: var(--surface-2); }
-.action-btn.primary {
-  background: var(--accent-dim);
-  border-color: rgba(200,241,53,0.3);
-  color: var(--accent);
-}
-.action-btn.primary:hover { background: rgba(200,241,53,0.18); }
+/* Export dropdown */
+.exp-menu{position:relative}
+.exp-drop{display:none;position:absolute;top:calc(100% + 5px);right:0;background:var(--s2);border:1px solid var(--border2);border-radius:9px;overflow:hidden;min-width:175px;z-index:200;box-shadow:0 16px 40px rgba(0,0,0,0.4)}
+.exp-drop.open{display:block}
+.exp-opt{display:flex;align-items:center;gap:9px;padding:9px 13px;font-size:0.76rem;color:var(--ts);cursor:pointer;transition:all 0.1s;border:none;background:none;width:100%;text-align:left}
+.exp-opt:hover{background:var(--s3);color:var(--tp)}
+.exp-div{border:none;border-top:1px solid var(--border);margin:3px 0}
 
-/* Export menu */
-.export-menu {
-  position: relative;
-}
-.export-dropdown {
-  display: none;
-  position: absolute;
-  top: calc(100% + 6px);
-  right: 0;
-  background: var(--surface-2);
-  border: 1px solid var(--border-2);
-  border-radius: 10px;
-  overflow: hidden;
-  min-width: 180px;
-  z-index: 200;
-  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
-}
-.export-dropdown.open { display: block; }
-.export-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.1s;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
-}
-.export-option:hover { background: var(--surface-3); color: var(--text-primary); }
-.export-divider { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
-.export-option-icon { font-size: 1rem; }
-
-/* JSON Viewer */
-.output-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.output-body::-webkit-scrollbar { width: 4px; }
-.output-body::-webkit-scrollbar-track { background: transparent; }
-.output-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+/* Output body */
+.out-body{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px}
+.out-body::-webkit-scrollbar{width:3px}
+.out-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
 
 /* Empty state */
-.empty-state {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  color: var(--text-muted);
-  text-align: center;
-  padding: 40px;
-}
-.empty-icon { font-size: 3rem; opacity: 0.4; }
-.empty-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-.empty-desc { font-size: 0.8rem; line-height: 1.6; max-width: 280px; }
-.empty-hint {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border: 1px dashed var(--border-2);
-  border-radius: 10px;
-  font-size: 0.74rem;
-  color: var(--text-muted);
-  margin-top: 8px;
-}
+.empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--tm);text-align:center;padding:40px}
+.empty-icon{font-size:2.5rem;opacity:0.35}
+.empty-title{font-family:'Space Grotesk',sans-serif;font-size:0.95rem;font-weight:600;color:var(--ts)}
+.empty-desc{font-size:0.76rem;line-height:1.6;max-width:260px}
+.empty-hint{display:flex;align-items:center;gap:7px;padding:9px 14px;border:1px dashed var(--border2);border-radius:9px;font-size:0.72rem;color:var(--tm);margin-top:6px}
 
-/* JSON Block */
-.json-block {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-}
-.json-block-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  background: var(--surface-2);
-  border-bottom: 1px solid var(--border);
-}
-.json-block-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.json-block-title::before {
-  content: '';
-  display: inline-block;
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-.copy-line-btn {
-  padding: 3px 10px;
-  border-radius: 6px;
-  font-size: 0.68rem;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.1s;
-  font-family: 'Inter', sans-serif;
-}
-.copy-line-btn:hover { border-color: var(--accent); color: var(--accent); }
-.copy-line-btn.copied { border-color: var(--green); color: var(--green); }
+/* JSON block */
+.json-block{background:var(--surface);border:1px solid var(--border);border-radius:11px;overflow:hidden}
+.json-header{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:var(--s2);border-bottom:1px solid var(--border)}
+.json-title{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--tm);display:flex;align-items:center;gap:7px}
+.json-title::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.copy-btn{padding:3px 9px;border-radius:5px;font-size:0.66rem;border:1px solid var(--border);background:transparent;color:var(--tm);cursor:pointer;transition:all 0.1s;font-family:'Inter',sans-serif}
+.copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+.copy-btn.done{border-color:var(--green);color:var(--green)}
+.json-code{padding:14px;font-family:'JetBrains Mono',monospace;font-size:0.76rem;line-height:1.7;color:var(--ts);overflow-x:auto;white-space:pre}
+.json-code::-webkit-scrollbar{height:3px}
+.json-code::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+.jk{color:var(--jk)}.js{color:var(--js)}.jn{color:var(--jn)}.jb{color:var(--jb)}.jp{color:var(--tm)}
 
-.json-code {
-  padding: 16px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.78rem;
-  line-height: 1.7;
-  color: var(--text-secondary);
-  overflow-x: auto;
-  white-space: pre;
-}
-.json-code::-webkit-scrollbar { height: 4px; }
-.json-code::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+/* Summary card */
+.sum-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px}
+.sum-title{font-family:'Space Grotesk',sans-serif;font-size:0.66rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--tm);margin-bottom:10px}
+.sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.sum-item{background:var(--s2);border-radius:7px;padding:9px}
+.sum-lbl{font-size:0.62rem;color:var(--tm);margin-bottom:3px}
+.sum-val{font-size:0.76rem;color:var(--tp);font-weight:500;word-break:break-word}
+.cdot{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:middle;border:1px solid rgba(255,255,255,0.1)}
 
-/* JSON Syntax Colors */
-.jk { color: var(--json-key); }
-.js { color: var(--json-string); }
-.jn { color: var(--json-number); }
-.jb { color: var(--json-bool); }
-.jnu { color: var(--json-null); }
-.jp { color: var(--text-muted); }
-.jc { color: var(--text-muted); font-style: italic; }
+/* ChatGPT banner */
+.gpt-banner{background:linear-gradient(135deg,#0f3027,#1a1a2e);border:1px solid rgba(77,199,128,0.25);border-radius:11px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.gpt-logo{width:34px;height:34px;background:#10a37f;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.gpt-text{font-size:0.76rem;color:var(--ts);line-height:1.5}
+.gpt-text strong{color:var(--tp);font-weight:600}
+.btn-gpt{padding:7px 14px;border-radius:7px;border:1px solid rgba(77,199,128,0.4);background:rgba(77,199,128,0.1);color:#4dc780;font-size:0.74rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.15s;font-family:'Inter',sans-serif}
+.btn-gpt:hover{background:rgba(77,199,128,0.2)}
 
-/* Preview card below JSON */
-.preview-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-}
-.preview-card-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-}
-.preview-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-.preview-item {
-  background: var(--surface-2);
-  border-radius: 8px;
-  padding: 10px;
-}
-.preview-item-label {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-  letter-spacing: 0.03em;
-}
-.preview-item-value {
-  font-size: 0.78rem;
-  color: var(--text-primary);
-  font-weight: 500;
-  word-break: break-word;
-}
-.color-preview-dot {
-  width: 14px; height: 14px;
-  border-radius: 4px;
-  display: inline-block;
-  margin-right: 6px;
-  vertical-align: middle;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-
-/* Export to ChatGPT banner */
-.chatgpt-banner {
-  background: linear-gradient(135deg, #0f3027 0%, #1a1a2e 100%);
-  border: 1px solid rgba(77,199,128,0.25);
-  border-radius: 12px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.chatgpt-info { display: flex; align-items: center; gap: 12px; }
-.chatgpt-logo {
-  width: 36px; height: 36px;
-  background: #10a37f;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  flex-shrink: 0;
-}
-.chatgpt-text { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; }
-.chatgpt-text strong { color: var(--text-primary); font-weight: 600; }
-.btn-chatgpt {
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid rgba(77,199,128,0.4);
-  background: rgba(77,199,128,0.1);
-  color: #4dc780;
-  font-size: 0.76rem;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.15s;
-  font-family: 'Inter', sans-serif;
-}
-.btn-chatgpt:hover { background: rgba(77,199,128,0.2); }
-
-/* Midjourney banner */
-.mj-banner {
-  background: linear-gradient(135deg, #1a0f2e 0%, #0f1a2e 100%);
-  border: 1px solid rgba(114,90,193,0.25);
-  border-radius: 12px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.mj-logo {
-  width: 36px; height: 36px;
-  background: #5b4a8f;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-.btn-mj {
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid rgba(114,90,193,0.4);
-  background: rgba(114,90,193,0.1);
-  color: #9b7ed4;
-  font-size: 0.76rem;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.15s;
-  font-family: 'Inter', sans-serif;
-}
-.btn-mj:hover { background: rgba(114,90,193,0.2); }
+/* Spinner */
+.spinner{width:14px;height:14px;border:2px solid rgba(10,10,15,0.3);border-top-color:#0A0A0F;border-radius:50%;animation:spin 0.6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* Toast */
-.toast-container {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.toast {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  background: var(--surface-2);
-  border: 1px solid var(--border-2);
-  border-radius: 10px;
-  font-size: 0.78rem;
-  color: var(--text-primary);
-  animation: slide-in 0.2s ease;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-  max-width: 280px;
-}
-.toast.success { border-color: rgba(52,211,153,0.4); }
-.toast.error { border-color: rgba(255,71,87,0.4); }
-.toast-icon { font-size: 1rem; }
-@keyframes slide-in {
-  from { transform: translateX(20px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
+.toast-wrap{position:fixed;bottom:22px;right:22px;z-index:1000;display:flex;flex-direction:column;gap:7px}
+.toast{display:flex;align-items:center;gap:9px;padding:9px 14px;background:var(--s2);border:1px solid var(--border2);border-radius:9px;font-size:0.76rem;color:var(--tp);animation:sin 0.2s ease;box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.toast.ok{border-color:rgba(52,211,153,0.4)}
+.toast.err{border-color:rgba(255,71,87,0.4)}
+@keyframes sin{from{transform:translateX(16px);opacity:0}to{transform:translateX(0);opacity:1}}
 
-/* Loading spinner */
-.spinner {
-  width: 16px; height: 16px;
-  border: 2px solid rgba(10,10,15,0.3);
-  border-top-color: #0A0A0F;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:16px;width:100%;max-width:540px;box-shadow:0 32px 80px rgba(0,0,0,0.6);transform:translateY(14px) scale(0.98);transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden}
+.modal-ov.open .modal{transform:translateY(0) scale(1)}
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 18px 14px;border-bottom:1px solid var(--border)}
+.modal-check{width:36px;height:36px;border-radius:50%;background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.35);display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--green);flex-shrink:0}
+.modal-t{font-family:'Space Grotesk',sans-serif;font-size:0.92rem;font-weight:700;color:var(--tp);letter-spacing:-0.01em}
+.modal-sub{font-size:0.63rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-top:3px;display:flex;align-items:center;gap:5px}
+.modal-sub-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pdot 1.5s infinite;display:inline-block}
+.modal-x{width:27px;height:27px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--tm);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.9rem;transition:all 0.15s;flex-shrink:0;line-height:1}
+.modal-x:hover{border-color:var(--red);color:var(--red)}
+.modal-steps{display:grid;grid-template-columns:repeat(4,1fr);padding:18px 18px 14px;gap:4px;position:relative}
+.modal-steps::after{content:'';position:absolute;top:calc(18px + 22px);left:calc(12.5% + 22px);right:calc(12.5% + 22px);height:1px;background:var(--border2)}
+.mstep{display:flex;flex-direction:column;align-items:center;gap:7px;position:relative;z-index:1}
+.mstep-box{width:44px;height:44px;border-radius:11px;background:var(--s2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:1.05rem;position:relative;transition:all 0.2s}
+.mstep-box.on{background:var(--adim);border-color:rgba(200,241,53,0.4)}
+.mstep-num{position:absolute;top:-7px;left:-7px;width:16px;height:16px;border-radius:50%;background:var(--s3);border:1px solid var(--border2);font-size:0.58rem;font-weight:700;color:var(--tm);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif}
+.mstep-num.on{background:var(--accent);color:#0A0A0F;border-color:var(--accent)}
+.mstep-lbl{font-size:0.65rem;font-weight:600;color:var(--tm);text-align:center;line-height:1.3}
+.mstep-lbl.on{color:var(--ts)}
+.mstep-arr{position:absolute;right:-7px;top:21px;color:var(--border2);font-size:0.65rem;z-index:2}
+.modal-detail{margin:0 14px 14px;background:var(--s2);border:1px solid var(--border);border-radius:11px;padding:12px 14px}
+.modal-dlbl{font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--tm);margin-bottom:9px;display:flex;align-items:center;gap:4px}
+.modal-dlbl::before{content:'·';font-size:1.1rem;line-height:0}
+.modal-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+.modal-list li{display:flex;align-items:baseline;gap:9px;font-size:0.74rem;color:var(--ts);line-height:1.4}
+.li-n{font-family:'JetBrains Mono',monospace;font-size:0.64rem;color:var(--tm);flex-shrink:0;width:14px}
+.modal-list strong{color:var(--tp);font-weight:600}
+.modal-list code{background:var(--s3);border:1px solid var(--border2);border-radius:4px;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--accent)}
+.modal-gpt-row{margin:0 14px 14px;display:flex;align-items:center;gap:7px;padding:8px 11px;background:var(--s2);border:1px solid var(--border);border-radius:9px}
+.mgpt-lbl{font-size:0.63rem;color:var(--tm);white-space:nowrap;font-weight:600;letter-spacing:0.04em}
+.mgpt-input{flex:1;background:none;border:none;outline:none;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--accent)}
+.mgpt-input::placeholder{color:var(--tm)}
+.mgpt-save{padding:4px 9px;border-radius:5px;border:1px solid rgba(200,241,53,0.3);background:var(--adim);color:var(--accent);font-size:0.66rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;white-space:nowrap}
+.mgpt-save:hover{background:rgba(200,241,53,0.2)}
+.modal-foot{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-top:1px solid var(--border);gap:7px}
+.btn-dis{padding:8px 13px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--tm);font-size:0.74rem;font-weight:500;cursor:pointer;transition:all 0.15s;font-family:'Inter',sans-serif}
+.btn-dis:hover{color:var(--tp)}
+.modal-fr{display:flex;gap:7px}
+.btn-ochatgpt{display:flex;align-items:center;gap:5px;padding:8px 13px;border-radius:8px;border:1px solid rgba(77,199,128,0.3);background:rgba(77,199,128,0.08);color:#4dc780;font-size:0.74rem;font-weight:600;cursor:pointer;transition:all 0.15s;font-family:'Inter',sans-serif;white-space:nowrap}
+.btn-ochatgpt:hover{background:rgba(77,199,128,0.15)}
+.btn-ogpt{display:flex;align-items:center;gap:5px;padding:8px 15px;border-radius:8px;border:none;background:var(--accent);color:#0A0A0F;font-size:0.74rem;font-weight:700;cursor:pointer;transition:all 0.15s;font-family:'Space Grotesk',sans-serif;white-space:nowrap}
+.btn-ogpt:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(200,241,53,0.3)}
+.btn-ogpt:disabled{opacity:0.4;pointer-events:none}
 
-/* Typewriter effect */
-@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
-.cursor { animation: blink 0.8s infinite; color: var(--accent); }
-
-/* Responsive */
-@media (max-width: 900px) {
-  .studio { grid-template-columns: 1fr; height: auto; }
-  .panel-left { max-height: 60vh; }
-  .panel-right { min-height: 50vh; }
-  .preview-grid { grid-template-columns: 1fr 1fr; }
+@media(max-width:900px){
+  .studio{grid-template-columns:1fr;height:auto}
+  .panel-left{max-height:60vh}
+  .panel-right{min-height:50vh}
+  .sum-grid{grid-template-columns:1fr 1fr}
 }
-
-/* ── EXPORT MODAL ── */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.72);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal {
-  background: var(--surface);
-  border: 1px solid var(--border-2);
-  border-radius: 18px;
-  width: 100%;
-  max-width: 560px;
-  box-shadow: 0 32px 80px rgba(0,0,0,0.6);
-  transform: translateY(16px) scale(0.98);
-  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
-  overflow: hidden;
-}
-.modal-overlay.open .modal { transform: translateY(0) scale(1); }
-
-.modal-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 20px 20px 16px;
-  border-bottom: 1px solid var(--border);
-}
-.modal-header-left { display: flex; align-items: center; gap: 12px; }
-.modal-check {
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  background: rgba(52,211,153,0.12);
-  border: 1px solid rgba(52,211,153,0.35);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; color: var(--green); flex-shrink: 0;
-}
-.modal-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.95rem; font-weight: 700;
-  color: var(--text-primary); letter-spacing: -0.01em;
-}
-.modal-subtitle {
-  font-size: 0.65rem; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--green); margin-top: 3px;
-  display: flex; align-items: center; gap: 6px;
-}
-.modal-subtitle-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--green);
-  animation: pulse-dot 1.5s infinite;
-  display: inline-block;
-}
-.modal-close {
-  width: 28px; height: 28px; border-radius: 8px;
-  border: 1px solid var(--border); background: transparent;
-  color: var(--text-muted); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem; transition: all 0.15s; flex-shrink: 0;
-  line-height: 1;
-}
-.modal-close:hover { border-color: var(--red); color: var(--red); }
-
-/* 4-step flow */
-.modal-steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  padding: 20px 20px 16px;
-  gap: 4px;
-  position: relative;
-}
-.modal-steps::after {
-  content: '';
-  position: absolute;
-  top: calc(20px + 22px);
-  left: calc(12.5% + 22px);
-  right: calc(12.5% + 22px);
-  height: 1px;
-  background: var(--border-2);
-}
-.modal-step {
-  display: flex; flex-direction: column;
-  align-items: center; gap: 8px;
-  position: relative; z-index: 1;
-}
-.step-icon-box {
-  width: 44px; height: 44px; border-radius: 12px;
-  background: var(--surface-2); border: 1px solid var(--border-2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; position: relative; transition: all 0.2s;
-}
-.step-icon-box.active {
-  background: rgba(200,241,53,0.1);
-  border-color: rgba(200,241,53,0.4);
-}
-.step-num-badge {
-  position: absolute; top: -7px; left: -7px;
-  width: 17px; height: 17px; border-radius: 50%;
-  background: var(--surface-3); border: 1px solid var(--border-2);
-  font-size: 0.6rem; font-weight: 700; color: var(--text-muted);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Space Grotesk', sans-serif;
-}
-.step-num-badge.active {
-  background: var(--accent); color: #0A0A0F; border-color: var(--accent);
-}
-.step-name {
-  font-size: 0.68rem; font-weight: 600;
-  color: var(--text-muted); text-align: center; line-height: 1.3;
-}
-.step-name.active { color: var(--text-secondary); }
-.step-sep {
-  position: absolute; right: -6px; top: 21px;
-  color: var(--border-2); font-size: 0.65rem; z-index: 2;
-}
-
-/* Detail box */
-.modal-detail {
-  margin: 0 16px 16px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 12px; padding: 14px 16px;
-}
-.modal-detail-label {
-  font-size: 0.63rem; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--text-muted); margin-bottom: 10px;
-  display: flex; align-items: center; gap: 5px;
-}
-.modal-detail-label::before { content: '·'; font-size: 1.2rem; line-height: 0; }
-.modal-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-.modal-list li {
-  display: flex; align-items: baseline; gap: 10px;
-  font-size: 0.76rem; color: var(--text-secondary); line-height: 1.4;
-}
-.modal-list .li-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem; color: var(--text-muted); flex-shrink: 0; width: 14px;
-}
-.modal-list strong { color: var(--text-primary); font-weight: 600; }
-.modal-list code {
-  background: var(--surface-3); border: 1px solid var(--border-2);
-  border-radius: 4px; padding: 1px 6px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem; color: var(--accent);
-}
-
-/* GPT URL row */
-.modal-gpt-row {
-  margin: 0 16px 16px;
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 12px;
-  background: var(--surface-2); border: 1px solid var(--border);
-  border-radius: 10px;
-}
-.modal-gpt-lbl {
-  font-size: 0.65rem; color: var(--text-muted);
-  white-space: nowrap; font-weight: 600; letter-spacing: 0.04em;
-}
-.modal-gpt-input {
-  flex: 1; background: none; border: none; outline: none;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem; color: var(--accent);
-}
-.modal-gpt-input::placeholder { color: var(--text-muted); }
-.modal-gpt-save {
-  padding: 4px 10px; border-radius: 6px;
-  border: 1px solid rgba(200,241,53,0.3);
-  background: var(--accent-dim); color: var(--accent);
-  font-size: 0.68rem; font-weight: 600; cursor: pointer;
-  font-family: 'Inter', sans-serif; transition: all 0.15s;
-  white-space: nowrap;
-}
-.modal-gpt-save:hover { background: rgba(200,241,53,0.2); }
-
-/* Footer */
-.modal-footer {
-  display: flex; align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px; border-top: 1px solid var(--border); gap: 8px;
-}
-.btn-dismiss {
-  padding: 8px 14px; border-radius: 9px;
-  border: 1px solid var(--border-2); background: transparent;
-  color: var(--text-muted); font-size: 0.76rem; font-weight: 500;
-  cursor: pointer; transition: all 0.15s; font-family: 'Inter', sans-serif;
-}
-.btn-dismiss:hover { color: var(--text-primary); }
-.modal-footer-right { display: flex; gap: 8px; }
-.btn-open-chatgpt {
-  display: flex; align-items: center; gap: 6px;
-  padding: 8px 14px; border-radius: 9px;
-  border: 1px solid rgba(77,199,128,0.3);
-  background: rgba(77,199,128,0.08); color: #4dc780;
-  font-size: 0.76rem; font-weight: 600; cursor: pointer;
-  transition: all 0.15s; font-family: 'Inter', sans-serif; white-space: nowrap;
-}
-.btn-open-chatgpt:hover { background: rgba(77,199,128,0.15); }
-.btn-open-gpt {
-  display: flex; align-items: center; gap: 6px;
-  padding: 8px 16px; border-radius: 9px;
-  border: none; background: var(--accent); color: #0A0A0F;
-  font-size: 0.76rem; font-weight: 700; cursor: pointer;
-  transition: all 0.15s; font-family: 'Space Grotesk', sans-serif; white-space: nowrap;
-}
-.btn-open-gpt:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(200,241,53,0.3); }
-.btn-open-gpt:disabled { opacity: 0.4; pointer-events: none; }
 </style>
 </head>
 <body>
 
-<!-- Topbar -->
 <nav class="topbar">
-  <div class="logo">
-    <div class="logo-dot"></div>
-    Ads<span>Brief</span> Studio
-  </div>
-  <div class="topbar-right">
-    <span class="badge badge-beta">Beta</span>
-    <button class="btn-sm" onclick="showDocs()">📖 Docs</button>
+  <div class="logo"><div class="logo-dot"></div>Ads<span>Brief</span> Studio</div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <span class="badge">Beta</span>
   </div>
 </nav>
 
-<!-- Main Studio -->
 <div class="studio">
-
-  <!-- LEFT: Form Panel -->
+  <!-- LEFT -->
   <div class="panel-left">
-    <div class="section-header">
-      <span class="section-title">Brief Builder</span>
-      <div class="step-indicator">
-        <div class="step-dot active" id="dot-0"></div>
-        <div class="step-dot" id="dot-1"></div>
-        <div class="step-dot" id="dot-2"></div>
-        <div class="step-dot" id="dot-3"></div>
-        <div class="step-dot" id="dot-4"></div>
-      </div>
-    </div>
-
-    <!-- Tab Navigation -->
     <div class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab(0, this)">
-        <span class="tab-icon">🏷️</span> Brand
-      </button>
-      <button class="tab-btn" onclick="switchTab(1, this)">
-        <span class="tab-icon">📢</span> Copy
-      </button>
-      <button class="tab-btn" onclick="switchTab(2, this)">
-        <span class="tab-icon">🎨</span> Visual
-      </button>
-      <button class="tab-btn" onclick="switchTab(3, this)">
-        <span class="tab-icon">👥</span> Audience
-      </button>
-      <button class="tab-btn" onclick="switchTab(4, this)">
-        <span class="tab-icon">⚙️</span> Output
-      </button>
+      <button class="tab-btn active" onclick="switchTab(0,this)">🏷️ Brand</button>
+      <button class="tab-btn" onclick="switchTab(1,this)">📢 Copy</button>
+      <button class="tab-btn" onclick="switchTab(2,this)">🖼️ Visual</button>
+      <button class="tab-btn" onclick="switchTab(3,this)">🎨 Style</button>
+      <button class="tab-btn" onclick="switchTab(4,this)">👥 Audience</button>
+      <button class="tab-btn" onclick="switchTab(5,this)">⚙️ Output</button>
     </div>
 
-    <!-- TAB 0: Brand Identity -->
+    <!-- TAB 0: Brand -->
     <div class="form-section active" id="tab-0">
-      <p class="field-section-label">Brand Identity</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Brand Name</span>
-        </div>
-        <input class="field-input" id="brand_name" type="text" placeholder="e.g. Wepose Travel Service" oninput="liveUpdate()">
+      <p class="sec-label">Brand Identity</p>
+      <div class="field">
+        <div class="field-label"><span>Brand Name</span></div>
+        <input class="fi" id="brand_name" type="text" placeholder="e.g. Wepose Travel Service">
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Brand Voice</span>
-          <span class="label-hint">Pilih karakter brand</span>
-        </div>
+      <div class="field">
+        <div class="field-label"><span>Brand Voice</span></div>
         <div class="toggle-group" id="brand_voice">
-          <button class="toggle-btn" onclick="toggleSingle(this, 'brand_voice')">Professional</button>
-          <button class="toggle-btn active" onclick="toggleSingle(this, 'brand_voice')">Friendly</button>
-          <button class="toggle-btn" onclick="toggleSingle(this, 'brand_voice')">Bold</button>
-          <button class="toggle-btn" onclick="toggleSingle(this, 'brand_voice')">Playful</button>
-          <button class="toggle-btn" onclick="toggleSingle(this, 'brand_voice')">Luxury</button>
-          <button class="toggle-btn" onclick="toggleSingle(this, 'brand_voice')">Edgy</button>
+          <button class="tog" onclick="togSingle(this,'brand_voice')">Professional</button>
+          <button class="tog on" onclick="togSingle(this,'brand_voice')">Friendly</button>
+          <button class="tog" onclick="togSingle(this,'brand_voice')">Bold</button>
+          <button class="tog" onclick="togSingle(this,'brand_voice')">Playful</button>
+          <button class="tog" onclick="togSingle(this,'brand_voice')">Luxury</button>
+          <button class="tog" onclick="togSingle(this,'brand_voice')">Edgy</button>
         </div>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Primary Color</span>
-        </div>
+      <hr class="divider">
+      <p class="sec-label">Color Palette</p>
+      <div class="field">
+        <div class="field-label"><span>Primary Accent</span></div>
         <div class="color-row">
-          <div class="color-swatch" style="background:#0c3d4f">
-            <input type="color" id="color_primary" value="#0c3d4f" oninput="syncColor('primary')">
-          </div>
-          <input class="field-input color-hex" id="hex_primary" type="text" value="#0c3d4f" placeholder="#000000" oninput="syncHex('primary')">
+          <div class="swatch" id="sw_p" style="background:#0c3d4f"><input type="color" id="cp" value="#0c3d4f" oninput="syncC('p')"></div>
+          <input class="fi" id="hp" type="text" value="#0c3d4f" placeholder="#0c3d4f" oninput="syncH('p')" style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;text-transform:uppercase">
         </div>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Secondary / Background Color</span>
-        </div>
+      <div class="field">
+        <div class="field-label"><span>Secondary / Background</span></div>
         <div class="color-row">
-          <div class="color-swatch" id="swatch_secondary" style="background:#ffffff">
-            <input type="color" id="color_secondary" value="#ffffff" oninput="syncColor('secondary')">
-          </div>
-          <input class="field-input color-hex" id="hex_secondary" type="text" value="#ffffff" placeholder="#ffffff" oninput="syncHex('secondary')">
+          <div class="swatch" id="sw_s" style="background:#8ce0ff"><input type="color" id="cs" value="#8ce0ff" oninput="syncC('s')"></div>
+          <input class="fi" id="hs" type="text" value="#8ce0ff" placeholder="#8ce0ff" oninput="syncH('s')" style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;text-transform:uppercase">
         </div>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Accent Color</span>
-          <span class="label-hint">CTA, highlight</span>
-        </div>
+      <div class="field">
+        <div class="field-label"><span>CTA Accent Color</span></div>
         <div class="color-row">
-          <div class="color-swatch" id="swatch_accent" style="background:#e8b84b">
-            <input type="color" id="color_accent" value="#e8b84b" oninput="syncColor('accent')">
-          </div>
-          <input class="field-input color-hex" id="hex_accent" type="text" value="#e8b84b" placeholder="#e8b84b" oninput="syncHex('accent')">
+          <div class="swatch" id="sw_a" style="background:#e8b84b"><input type="color" id="ca" value="#e8b84b" oninput="syncC('a')"></div>
+          <input class="fi" id="ha" type="text" value="#e8b84b" placeholder="#e8b84b" oninput="syncH('a')" style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;text-transform:uppercase">
         </div>
       </div>
-
-      <hr class="field-divider">
-      <p class="field-section-label">Typography System</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Display Font (Headline)</span>
-        </div>
-        <select class="field-input" id="font_display" onchange="liveUpdate()">
-          <option value="Space Grotesk">Space Grotesk</option>
-          <option value="Syne">Syne</option>
-          <option value="Plus Jakarta Sans">Plus Jakarta Sans</option>
-          <option value="Bebas Neue">Bebas Neue</option>
-          <option value="Montserrat">Montserrat</option>
-          <option value="Raleway">Raleway</option>
-          <option value="Poppins">Poppins</option>
-          <option value="Anton">Anton</option>
+      <div class="field">
+        <div class="field-label"><span>Color Harmony Instruction</span><span class="field-hint">Opsional</span></div>
+        <input class="fi" id="color_harmony" type="text" value="Create a cohesive color grading using these specific hex colors as the dominant palette." placeholder="e.g. Create a cohesive color grading...">
+      </div>
+      <hr class="divider">
+      <p class="sec-label">Typography</p>
+      <div class="field">
+        <div class="field-label"><span>Display Font (Headline)</span></div>
+        <select class="fi" id="font_display">
+          <option>Space Grotesk</option><option>Syne</option><option>Plus Jakarta Sans</option>
+          <option>Bebas Neue</option><option>Montserrat</option><option>Poppins</option><option>Anton</option>
         </select>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Body Font</span>
-        </div>
-        <select class="field-input" id="font_body" onchange="liveUpdate()">
-          <option value="Inter">Inter</option>
-          <option value="DM Sans">DM Sans</option>
-          <option value="Nunito">Nunito</option>
-          <option value="Lato">Lato</option>
-          <option value="Source Sans Pro">Source Sans Pro</option>
+      <div class="field">
+        <div class="field-label"><span>Body Font</span></div>
+        <select class="fi" id="font_body">
+          <option>Inter</option><option>DM Sans</option><option>Nunito</option><option>Lato</option>
         </select>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Logo Safe Zone</span>
-          <span class="label-hint">px</span>
-        </div>
+      <div class="field">
+        <div class="field-label"><span>Logo Safe Zone</span><span class="field-hint">px</span></div>
         <div class="slider-row">
-          <input type="range" class="field-slider" id="logo_safe_zone" min="8" max="48" value="16" oninput="document.getElementById('lsz_val').textContent=this.value+'px';liveUpdate()">
-          <span class="slider-value" id="lsz_val">16px</span>
+          <input type="range" class="slider" id="logo_sz" min="8" max="48" value="16" oninput="document.getElementById('lsz_v').textContent=this.value+'px'">
+          <span class="slider-val" id="lsz_v">16px</span>
         </div>
       </div>
     </div>
 
-    <!-- TAB 1: Copy / Messaging -->
+    <!-- TAB 1: Copy -->
     <div class="form-section" id="tab-1">
-      <p class="field-section-label">Ad Copy</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Headline</span>
-          <span class="label-hint">Max 8 kata, punch kuat</span>
-        </div>
-        <input class="field-input" id="headline" type="text" placeholder="e.g. VISA CHINA ANTI RIBET" oninput="liveUpdate()">
+      <p class="sec-label">Ad Copy</p>
+      <div class="field">
+        <div class="field-label"><span>Subject / Context</span><span class="field-hint">Deskripsi singkat banner</span></div>
+        <input class="fi" id="subject" type="text" placeholder="e.g. A professional promotional banner for Wepose">
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Subheadline</span>
-        </div>
-        <input class="field-input" id="subheadline" type="text" placeholder="e.g. Cuma Modal Paspor Bisa Jelajahi China" oninput="liveUpdate()">
+      <div class="field">
+        <div class="field-label"><span>Headline</span><span class="field-hint">Max 8 kata, punch kuat</span></div>
+        <input class="fi" id="headline" type="text" placeholder="e.g. 800+ ORANG CEK VISA BULAN INI">
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Call to Action</span>
-        </div>
-        <input class="field-input" id="cta_text" type="text" placeholder="e.g. Apply Visa China Sekarang" oninput="liveUpdate()">
+      <div class="field">
+        <div class="field-label"><span>Subheadline</span></div>
+        <input class="fi" id="subheadline" type="text" placeholder="e.g. Ternyata banyak yang melakukan kesalahan yang sama">
       </div>
-
-      <hr class="field-divider">
-      <p class="field-section-label">CTA Design Spec</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">CTA Shape</span>
-        </div>
+      <div class="field">
+        <div class="field-label"><span>Description / Visual Notes</span><span class="field-hint">Instruksi visual tambahan</span></div>
+        <textarea class="fi" id="description" rows="4" placeholder="e.g. Angka 800+ dibuat paling dominan. Background berupa form assessment blur. Beri lingkaran merah pada kata 'kesalahan'."></textarea>
+      </div>
+      <div class="field">
+        <div class="field-label"><span>Call to Action</span></div>
+        <input class="fi" id="cta_text" type="text" placeholder="e.g. Cek Kelayakan Visa Gratis">
+      </div>
+      <hr class="divider">
+      <p class="sec-label">CTA Design Spec</p>
+      <div class="field">
+        <div class="field-label"><span>CTA Shape</span></div>
         <div class="toggle-group" id="cta_shape">
-          <button class="toggle-btn active" onclick="toggleSingle(this,'cta_shape')">Pill</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'cta_shape')">Rounded</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'cta_shape')">Sharp</button>
+          <button class="tog on" onclick="togSingle(this,'cta_shape')">Pill</button>
+          <button class="tog" onclick="togSingle(this,'cta_shape')">Rounded</button>
+          <button class="tog" onclick="togSingle(this,'cta_shape')">Sharp</button>
         </div>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">CTA Icon</span>
-        </div>
+      <div class="field">
+        <div class="field-label"><span>CTA Icon</span></div>
         <div class="toggle-group" id="cta_icon">
-          <button class="toggle-btn active" onclick="toggleSingle(this,'cta_icon')">→ Arrow</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'cta_icon')">💬 WhatsApp</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'cta_icon')">✦ Star</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'cta_icon')">None</button>
+          <button class="tog on" onclick="togSingle(this,'cta_icon')">→ Arrow</button>
+          <button class="tog" onclick="togSingle(this,'cta_icon')">💬 WhatsApp</button>
+          <button class="tog" onclick="togSingle(this,'cta_icon')">✦ Star</button>
+          <button class="tog" onclick="togSingle(this,'cta_icon')">None</button>
         </div>
       </div>
-
-      <hr class="field-divider">
-      <p class="field-section-label">Key Features (USP)</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Feature Points</span>
-          <span class="label-hint">Enter untuk tambah</span>
-        </div>
-        <div class="tags-container" id="features_container" onclick="document.getElementById('features_input').focus()">
-          <span class="tag">Proses mudah <span class="tag-remove" onclick="removeTag(this)">×</span></span>
-          <span class="tag">Cepat & Efisien <span class="tag-remove" onclick="removeTag(this)">×</span></span>
-          <span class="tag">Tim profesional <span class="tag-remove" onclick="removeTag(this)">×</span></span>
-          <input class="tags-input" id="features_input" placeholder="Tambah fitur..." onkeydown="handleTagInput(event, 'features_container')">
+      <hr class="divider">
+      <p class="sec-label">Key Features (USP)</p>
+      <div class="field">
+        <div class="field-label"><span>Features to Highlight</span><span class="field-hint">Enter untuk tambah</span></div>
+        <div class="tags-wrap" id="feat_wrap" onclick="document.getElementById('feat_in').focus()">
+          <input class="tag-input" id="feat_in" placeholder="Tambah fitur..." onkeydown="addTag(event,'feat_wrap')">
         </div>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Forbidden Elements</span>
-          <span class="label-hint">Apa yang TIDAK boleh muncul</span>
-        </div>
-        <div class="tags-container" id="forbidden_container" onclick="document.getElementById('forbidden_input').focus()">
-          <span class="tag">clutter <span class="tag-remove" onclick="removeTag(this)">×</span></span>
-          <span class="tag">serif font <span class="tag-remove" onclick="removeTag(this)">×</span></span>
-          <input class="tags-input" id="forbidden_input" placeholder="Tambah larangan..." onkeydown="handleTagInput(event, 'forbidden_container')">
+      <div class="field">
+        <div class="field-label"><span>Forbidden Elements</span><span class="field-hint">Yang TIDAK boleh muncul</span></div>
+        <div class="tags-wrap" id="forb_wrap" onclick="document.getElementById('forb_in').focus()">
+          <span class="tag">clutter <span class="tag-x" onclick="removeTag(this)">×</span></span>
+          <span class="tag">serif font <span class="tag-x" onclick="removeTag(this)">×</span></span>
+          <input class="tag-input" id="forb_in" placeholder="Tambah larangan..." onkeydown="addTag(event,'forb_wrap')">
         </div>
       </div>
     </div>
 
-    <!-- TAB 2: Visual Direction -->
+    <!-- TAB 2: Visual Layout -->
     <div class="form-section" id="tab-2">
-      <p class="field-section-label">Format & Output</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Aspect Ratio</span>
-        </div>
-        <div class="ratio-grid" id="aspect_ratio">
-          <button class="ratio-btn" onclick="toggleRatio(this)">
-            <div class="ratio-visual" style="width:24px;height:24px"></div>
-            <span class="ratio-label">1:1<br>Square</span>
-          </button>
-          <button class="ratio-btn active" onclick="toggleRatio(this)">
-            <div class="ratio-visual" style="width:20px;height:25px"></div>
-            <span class="ratio-label">4:5<br>Feed</span>
-          </button>
-          <button class="ratio-btn" onclick="toggleRatio(this)">
-            <div class="ratio-visual" style="width:16px;height:28px"></div>
-            <span class="ratio-label">9:16<br>Story</span>
-          </button>
-          <button class="ratio-btn" onclick="toggleRatio(this)">
-            <div class="ratio-visual" style="width:28px;height:16px"></div>
-            <span class="ratio-label">16:9<br>Banner</span>
-          </button>
+      <p class="sec-label">Product Visual Layout</p>
+      <div class="field">
+        <div class="field-label"><span>Expected Images Count</span><span class="field-hint">Berapa foto produk</span></div>
+        <div class="toggle-group" id="img_count">
+          <button class="tog on" onclick="togSingle(this,'img_count')">0 — No Product</button>
+          <button class="tog" onclick="togSingle(this,'img_count')">1 — Single Hero</button>
+          <button class="tog" onclick="togSingle(this,'img_count')">2 — Duo</button>
+          <button class="tog" onclick="togSingle(this,'img_count')">3+ — Multi</button>
         </div>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Visual Aesthetic</span>
-        </div>
-        <div class="toggle-group" id="aesthetic">
-          <button class="toggle-btn active" onclick="toggleSingle(this,'aesthetic')">Bright & Fresh</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'aesthetic')">Dark & Bold</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'aesthetic')">Minimal Clean</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'aesthetic')">Luxury</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'aesthetic')">Retro Warm</button>
-        </div>
-      </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Composition Style</span>
-        </div>
+      <div class="field">
+        <div class="field-label"><span>Composition Style</span></div>
         <div class="toggle-group" id="composition">
-          <button class="toggle-btn active" onclick="toggleSingle(this,'composition')">Hero Center</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'composition')">Left Align</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'composition')">Split Screen</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'composition')">Overlapping</button>
+          <button class="tog on" onclick="togSingle(this,'composition')">Single Hero, Dominant Focal</button>
+          <button class="tog" onclick="togSingle(this,'composition')">Split Screen</button>
+          <button class="tog" onclick="togSingle(this,'composition')">Flat Lay</button>
+          <button class="tog" onclick="togSingle(this,'composition')">Collage</button>
         </div>
       </div>
-
-      <hr class="field-divider">
-      <p class="field-section-label">Depth & Lighting</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Lighting Setup</span>
-        </div>
-        <div class="toggle-group" id="lighting">
-          <button class="toggle-btn active" onclick="toggleSingle(this,'lighting')">Studio 3-point</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'lighting')">Soft Natural</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'lighting')">Dramatic Side</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'lighting')">Backlit Glow</button>
+      <div class="field">
+        <div class="field-label"><span>Placement Rule</span></div>
+        <div class="toggle-group" id="placement">
+          <button class="tog on" onclick="togSingle(this,'placement')">Center Dominant</button>
+          <button class="tog" onclick="togSingle(this,'placement')">Left Hero</button>
+          <button class="tog" onclick="togSingle(this,'placement')">Right Hero</button>
+          <button class="tog" onclick="togSingle(this,'placement')">Bottom Heavy</button>
         </div>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Depth of Field</span>
-          <span class="label-hint">Blur amount</span>
-        </div>
+      <div class="field">
+        <div class="field-label"><span>Integration & Blending</span></div>
+        <select class="fi" id="blending">
+          <option>Blend seamlessly with accurate shadows and reflections matching lighting style</option>
+          <option>Hard cutout with drop shadow — product floats above background</option>
+          <option>Soft vignette blend — product fades into background</option>
+          <option>Glassmorphism overlay — frosted glass effect around product</option>
+        </select>
+      </div>
+      <hr class="divider">
+      <p class="sec-label">Depth Composition</p>
+      <div class="field">
+        <div class="field-label"><span>Depth of Field</span></div>
         <div class="toggle-group" id="dof">
-          <button class="toggle-btn" onclick="toggleSingle(this,'dof')">Sharp All</button>
-          <button class="toggle-btn active" onclick="toggleSingle(this,'dof')">f/2.8 Soft BG</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'dof')">f/1.4 Bokeh</button>
+          <button class="tog" onclick="togSingle(this,'dof')">Sharp All</button>
+          <button class="tog on" onclick="togSingle(this,'dof')">f/2.8 Soft BG</button>
+          <button class="tog" onclick="togSingle(this,'dof')">f/1.4 Bokeh</button>
         </div>
       </div>
-
-      <hr class="field-divider">
-      <p class="field-section-label">Motion Layer</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Motion Export</span>
-        </div>
-        <div class="toggle-group" id="motion_format">
-          <button class="toggle-btn active" onclick="toggleMulti(this)">Static PNG</button>
-          <button class="toggle-btn" onclick="toggleMulti(this)">MP4 Loop</button>
-          <button class="toggle-btn" onclick="toggleMulti(this)">GIF</button>
-          <button class="toggle-btn" onclick="toggleMulti(this)">Lottie JSON</button>
-        </div>
-      </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Animation Style</span>
-        </div>
-        <div class="toggle-group" id="animation_style">
-          <button class="toggle-btn" onclick="toggleSingle(this,'animation_style')">None</button>
-          <button class="toggle-btn active" onclick="toggleSingle(this,'animation_style')">Subtle Float</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'animation_style')">Fade Sequence</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'animation_style')">Cinematic Pan</button>
+      <hr class="divider">
+      <p class="sec-label">UI Elements</p>
+      <div class="field">
+        <div class="field-label"><span>Floating UI Style</span></div>
+        <div class="toggle-group" id="ui_style">
+          <button class="tog on" onclick="togSingle(this,'ui_style')">Glassmorphism Cards</button>
+          <button class="tog" onclick="togSingle(this,'ui_style')">Minimal Badges</button>
+          <button class="tog" onclick="togSingle(this,'ui_style')">Data Dashboard</button>
+          <button class="tog" onclick="togSingle(this,'ui_style')">None</button>
         </div>
       </div>
     </div>
 
-    <!-- TAB 3: Audience -->
+    <!-- TAB 3: Style -->
     <div class="form-section" id="tab-3">
-      <p class="field-section-label">Target Audience</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Age Range</span>
-        </div>
-        <div class="field-input-row">
-          <input class="field-input" id="age_min" type="number" placeholder="Min: 22" value="22" oninput="liveUpdate()">
-          <input class="field-input" id="age_max" type="number" placeholder="Max: 35" value="35" oninput="liveUpdate()">
-        </div>
-      </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Demographic</span>
-        </div>
-        <input class="field-input" id="demographic" type="text" placeholder="e.g. Millennial & Gen-Z Indonesia" oninput="liveUpdate()" value="Millennial & Gen-Z Indonesia">
-      </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Psychographic</span>
-          <span class="label-hint">Karakter & behavior</span>
-        </div>
-        <textarea class="field-input" id="psychographic" rows="3" placeholder="e.g. Traveler impulsif, price-sensitive, mobile-first" oninput="liveUpdate()">Traveler impulsif, price-sensitive, mobile-first</textarea>
-      </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Platform Context</span>
-        </div>
-        <div class="toggle-group" id="platform">
-          <button class="toggle-btn active" onclick="toggleSingle(this,'platform')">Instagram Feed</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'platform')">TikTok</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'platform')">Facebook Ads</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'platform')">Google Display</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'platform')">Twitter/X</button>
+      <p class="sec-label">Format & Aesthetic</p>
+      <div class="field">
+        <div class="field-label"><span>Aspect Ratio</span></div>
+        <div class="ratio-grid" id="aspect_ratio">
+          <button class="ratio-btn" onclick="togRatio(this)">
+            <div class="ratio-shape" style="width:22px;height:22px"></div>
+            <span class="ratio-lbl">1:1<br>Square</span>
+          </button>
+          <button class="ratio-btn on" onclick="togRatio(this)">
+            <div class="ratio-shape" style="width:19px;height:24px"></div>
+            <span class="ratio-lbl">4:5<br>Feed</span>
+          </button>
+          <button class="ratio-btn" onclick="togRatio(this)">
+            <div class="ratio-shape" style="width:15px;height:27px"></div>
+            <span class="ratio-lbl">9:16<br>Story</span>
+          </button>
+          <button class="ratio-btn" onclick="togRatio(this)">
+            <div class="ratio-shape" style="width:27px;height:15px"></div>
+            <span class="ratio-lbl">16:9<br>Banner</span>
+          </button>
         </div>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Scroll-Stop Priority</span>
-          <span class="label-hint">Hook utama dalam 3 detik</span>
-        </div>
-        <div class="toggle-group" id="scroll_stop">
-          <button class="toggle-btn active" onclick="toggleSingle(this,'scroll_stop')">3-sec Visual Hook</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'scroll_stop')">Emotional Pull</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'scroll_stop')">Price Shock</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'scroll_stop')">Curiosity Gap</button>
+      <div class="field">
+        <div class="field-label"><span>Style Preset</span></div>
+        <div class="toggle-group" id="style_preset">
+          <button class="tog on" onclick="togSingle(this,'style_preset')">Bright & Fresh</button>
+          <button class="tog" onclick="togSingle(this,'style_preset')">Warm & Cozy</button>
+          <button class="tog" onclick="togSingle(this,'style_preset')">Dark Neon</button>
+          <button class="tog" onclick="togSingle(this,'style_preset')">Minimal Clean</button>
+          <button class="tog" onclick="togSingle(this,'style_preset')">Luxury Gold</button>
+          <button class="tog" onclick="togSingle(this,'style_preset')">Retro Warm</button>
         </div>
       </div>
-
-      <hr class="field-divider">
-      <p class="field-section-label">A/B Variant Generation</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Enable A/B Variants</span>
-        </div>
-        <div class="toggle-group" id="ab_enabled">
-          <button class="toggle-btn active" onclick="toggleSingle(this,'ab_enabled')">Yes — Generate 2 Variants</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'ab_enabled')">No — Single Output</button>
+      <div class="field">
+        <div class="field-label"><span>Aesthetic Keywords</span><span class="field-hint">Mood & vibe</span></div>
+        <input class="fi" id="aesthetic_kw" type="text" value="modern lifestyle feel, approachable, premium" placeholder="e.g. cinematic, editorial, soft natural light">
+      </div>
+      <hr class="divider">
+      <p class="sec-label">Lighting Setup</p>
+      <div class="field">
+        <div class="field-label"><span>Lighting Style</span></div>
+        <div class="toggle-group" id="lighting">
+          <button class="tog on" onclick="togSingle(this,'lighting')">Studio 3-point</button>
+          <button class="tog" onclick="togSingle(this,'lighting')">Soft Natural Daylight</button>
+          <button class="tog" onclick="togSingle(this,'lighting')">High-contrast Dramatic</button>
+          <button class="tog" onclick="togSingle(this,'lighting')">Backlit Glow</button>
+          <button class="tog" onclick="togSingle(this,'lighting')">Neon Cyberpunk</button>
         </div>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Variant Metric</span>
-          <span class="label-hint">Apa yang dibandingkan</span>
-        </div>
-        <div class="toggle-group" id="ab_metric">
-          <button class="toggle-btn active" onclick="toggleSingle(this,'ab_metric')">Visual Contrast Score</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'ab_metric')">CTA Color</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'ab_metric')">Layout</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'ab_metric')">Headline Tone</button>
+      <hr class="divider">
+      <p class="sec-label">Typography Instructions</p>
+      <div class="field">
+        <div class="field-label"><span>Typography Note</span></div>
+        <textarea class="fi" id="typo_note" rows="3" placeholder="e.g. Leave clear negative space for text overlay. Headline area at top third.">Leave clear negative space for typography. The generated image should include sleek modern typography for the headline/features, or provide clean areas where text can be overlaid perfectly later.</textarea>
+      </div>
+      <hr class="divider">
+      <p class="sec-label">Composition Rules</p>
+      <div class="field">
+        <div class="field-label"><span>Active Rules</span></div>
+        <div class="toggle-group" id="comp_rules">
+          <button class="tog on" onclick="togMulti(this)">Rule of Thirds</button>
+          <button class="tog on" onclick="togMulti(this)">Clear Visual Hierarchy</button>
+          <button class="tog on" onclick="togMulti(this)">BG Not Overpower Product</button>
+          <button class="tog" onclick="togMulti(this)">Symmetrical Balance</button>
+          <button class="tog" onclick="togMulti(this)">Golden Ratio</button>
         </div>
       </div>
     </div>
 
-    <!-- TAB 4: Output Config -->
+    <!-- TAB 4: Audience -->
     <div class="form-section" id="tab-4">
-      <p class="field-section-label">Output Format</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">File Type</span>
-        </div>
-        <div class="toggle-group" id="file_type">
-          <button class="toggle-btn active" onclick="toggleSingle(this,'file_type')">PNG</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'file_type')">WebP</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'file_type')">JPG</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'file_type')">PDF</button>
+      <p class="sec-label">Target Audience</p>
+      <div class="field">
+        <div class="field-label"><span>Demographic</span></div>
+        <input class="fi" id="demographic" type="text" value="Millennial & Gen-Z Indonesia" placeholder="e.g. Millennial & Gen-Z Indonesia">
+      </div>
+      <div class="field">
+        <div class="field-label"><span>Age Range</span></div>
+        <div class="fi-row">
+          <input class="fi" id="age_min" type="number" value="22" placeholder="Min">
+          <input class="fi" id="age_max" type="number" value="35" placeholder="Max">
         </div>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Background</span>
-        </div>
-        <div class="toggle-group" id="bg_type">
-          <button class="toggle-btn active" onclick="toggleSingle(this,'bg_type')">Solid Color</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'bg_type')">Transparent</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'bg_type')">Gradient</button>
+      <div class="field">
+        <div class="field-label"><span>Psychographic</span></div>
+        <textarea class="fi" id="psychographic" rows="2" placeholder="e.g. Traveler impulsif, price-sensitive, mobile-first">Traveler impulsif, price-sensitive, mobile-first</textarea>
+      </div>
+      <div class="field">
+        <div class="field-label"><span>Platform Context</span></div>
+        <div class="toggle-group" id="platform">
+          <button class="tog on" onclick="togSingle(this,'platform')">Instagram Feed</button>
+          <button class="tog" onclick="togSingle(this,'platform')">TikTok</button>
+          <button class="tog" onclick="togSingle(this,'platform')">Facebook Ads</button>
+          <button class="tog" onclick="togSingle(this,'platform')">Google Display</button>
         </div>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Resolution</span>
-        </div>
-        <div class="toggle-group" id="resolution">
-          <button class="toggle-btn" onclick="toggleSingle(this,'resolution')">72 DPI (Web)</button>
-          <button class="toggle-btn active" onclick="toggleSingle(this,'resolution')">150 DPI (Social)</button>
-          <button class="toggle-btn" onclick="toggleSingle(this,'resolution')">300 DPI (Print)</button>
+      <div class="field">
+        <div class="field-label"><span>Scroll-Stop Priority</span></div>
+        <div class="toggle-group" id="scroll_stop">
+          <button class="tog on" onclick="togSingle(this,'scroll_stop')">3-sec Visual Hook</button>
+          <button class="tog" onclick="togSingle(this,'scroll_stop')">Emotional Pull</button>
+          <button class="tog" onclick="togSingle(this,'scroll_stop')">Price Shock</button>
+          <button class="tog" onclick="togSingle(this,'scroll_stop')">Curiosity Gap</button>
         </div>
       </div>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Photorealism Level</span>
-        </div>
-        <div class="slider-row">
-          <input type="range" class="field-slider" id="photorealism" min="1" max="5" value="4" oninput="updatePhotoLabel(this.value);liveUpdate()">
-          <span class="slider-value" id="photo_val">Ultra-8K</span>
-        </div>
-      </div>
-
-      <hr class="field-divider">
-      <p class="field-section-label">Layer Export</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Export Layers</span>
-          <span class="label-hint">Pilih layer yang diexport</span>
-        </div>
-        <div class="toggle-group" id="export_layers">
-          <button class="toggle-btn active" onclick="toggleMulti(this)">Background</button>
-          <button class="toggle-btn active" onclick="toggleMulti(this)">Product</button>
-          <button class="toggle-btn active" onclick="toggleMulti(this)">Typography</button>
-          <button class="toggle-btn active" onclick="toggleMulti(this)">CTA Button</button>
-          <button class="toggle-btn" onclick="toggleMulti(this)">Logo</button>
-          <button class="toggle-btn" onclick="toggleMulti(this)">Feature Badges</button>
+      <hr class="divider">
+      <p class="sec-label">A/B Variant</p>
+      <div class="field">
+        <div class="field-label"><span>Generate A/B Variants</span></div>
+        <div class="toggle-group" id="ab_on">
+          <button class="tog on" onclick="togSingle(this,'ab_on')">Yes — 2 Variants</button>
+          <button class="tog" onclick="togSingle(this,'ab_on')">No — Single</button>
         </div>
       </div>
-
-      <hr class="field-divider">
-      <p class="field-section-label">Negative Prompt</p>
-
-      <div class="field-group">
-        <div class="field-label">
-          <span class="label-text">Additional Exclusions</span>
+      <div class="field">
+        <div class="field-label"><span>Variant Metric</span></div>
+        <div class="toggle-group" id="ab_metric">
+          <button class="tog on" onclick="togSingle(this,'ab_metric')">Visual Contrast Score</button>
+          <button class="tog" onclick="togSingle(this,'ab_metric')">CTA Color</button>
+          <button class="tog" onclick="togSingle(this,'ab_metric')">Layout</button>
+          <button class="tog" onclick="togSingle(this,'ab_metric')">Headline Tone</button>
         </div>
-        <textarea class="field-input" id="neg_prompt_extra" rows="3" placeholder="Tambah hal yang tidak diinginkan..." oninput="liveUpdate()">ugly, deformed, blurry, watermarks, low resolution</textarea>
       </div>
     </div>
 
-    <!-- Generate Bar -->
-    <div class="generate-bar">
-      <button class="btn-generate" id="btn_generate" onclick="generateJSON()">
-        <span id="gen_icon">✦</span>
-        <span id="gen_text">Generate Brief</span>
+    <!-- TAB 5: Output -->
+    <div class="form-section" id="tab-5">
+      <p class="sec-label">Output Parameters</p>
+      <div class="field">
+        <div class="field-label"><span>Quality</span></div>
+        <div class="toggle-group" id="quality">
+          <button class="tog" onclick="togSingle(this,'quality')">Standard</button>
+          <button class="tog on" onclick="togSingle(this,'quality')">High</button>
+          <button class="tog" onclick="togSingle(this,'quality')">Ultra</button>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label"><span>Photorealism Level</span></div>
+        <div class="slider-row">
+          <input type="range" class="slider" id="photorealism" min="1" max="5" value="4" oninput="updatePhoto(this.value)">
+          <span class="slider-val" id="photo_v">ultra-realistic, 8k</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label"><span>File Type</span></div>
+        <div class="toggle-group" id="file_type">
+          <button class="tog on" onclick="togSingle(this,'file_type')">PNG</button>
+          <button class="tog" onclick="togSingle(this,'file_type')">WebP</button>
+          <button class="tog" onclick="togSingle(this,'file_type')">JPG</button>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label"><span>Background</span></div>
+        <div class="toggle-group" id="bg_type">
+          <button class="tog on" onclick="togSingle(this,'bg_type')">Solid Color</button>
+          <button class="tog" onclick="togSingle(this,'bg_type')">Transparent</button>
+          <button class="tog" onclick="togSingle(this,'bg_type')">Gradient</button>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label"><span>Resolution</span></div>
+        <div class="toggle-group" id="resolution">
+          <button class="tog" onclick="togSingle(this,'resolution')">72 DPI Web</button>
+          <button class="tog on" onclick="togSingle(this,'resolution')">150 DPI Social</button>
+          <button class="tog" onclick="togSingle(this,'resolution')">300 DPI Print</button>
+        </div>
+      </div>
+      <hr class="divider">
+      <p class="sec-label">Negative Prompt</p>
+      <div class="field">
+        <div class="field-label"><span>Exclusions</span></div>
+        <textarea class="fi" id="neg_prompt" rows="3">ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, bad typography, warped products, misspelled words, cluttered background, watermarks, signatures, text artifacts, low resolution</textarea>
+      </div>
+    </div>
+
+    <div class="gen-bar">
+      <button class="btn-gen" id="btn_gen" onclick="generateJSON()">
+        <span id="gen_ic">✦</span>
+        <span id="gen_tx">Generate Brief</span>
       </button>
-      <button class="btn-reset" onclick="resetForm()" title="Reset semua">🗑️</button>
+      <button class="btn-reset" onclick="resetForm()" title="Reset">🗑️</button>
     </div>
   </div>
 
-  <!-- RIGHT: Output Panel -->
+  <!-- RIGHT -->
   <div class="panel-right">
-    <div class="output-header">
-      <div class="output-title">
-        <span>📄</span> JSON Output
-      </div>
-      <div style="display:flex;align-items:center;gap:12px">
-        <div class="output-status">
-          <div class="status-dot" id="status_dot"></div>
-          <span id="status_text">Menunggu brief...</span>
+    <div class="out-header">
+      <div class="out-title"><span>📄</span> JSON Output</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="out-status">
+          <div class="sdot" id="sdot"></div>
+          <span id="stxt">Menunggu brief...</span>
         </div>
-        <div class="output-actions">
-          <button class="action-btn" onclick="copyJSON()" id="copy_btn">
-            <span>⎘</span> Copy JSON
-          </button>
-          <div class="export-menu">
-            <button class="action-btn primary" onclick="toggleExport()">
-              Export ↗
-            </button>
-            <div class="export-dropdown" id="export_dropdown">
-              <button class="export-option" onclick="exportToChatGPT()">
-                <span class="export-option-icon">🤖</span> Buka di ChatGPT
-              </button>
-              <button class="export-option" onclick="exportToMidjourney()">
-                <span class="export-option-icon">🎨</span> Format Midjourney
-              </button>
-              <div class="export-divider"></div>
-              <button class="export-option" onclick="downloadJSON()">
-                <span class="export-option-icon">⬇️</span> Download .json
-              </button>
+        <div class="out-actions">
+          <button class="act-btn" onclick="copyJSON()" id="copy_btn">⎘ Copy JSON</button>
+          <div class="exp-menu">
+            <button class="act-btn primary" onclick="togExp()">Export ↗</button>
+            <div class="exp-drop" id="exp_drop">
+              <button class="exp-opt" onclick="exportGPT()">🤖 Buka AdsBrief AI</button>
+              <button class="exp-opt" onclick="exportMJ()">🎨 Format Midjourney</button>
+              <div class="exp-div"></div>
+              <button class="exp-opt" onclick="dlJSON()">⬇️ Download .json</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="output-body" id="output_body">
-      <!-- Empty State -->
-      <div class="empty-state" id="empty_state">
+    <div class="out-body" id="out_body">
+      <div class="empty" id="empty_st">
         <div class="empty-icon">⬡</div>
         <div class="empty-title">Brief belum digenerate</div>
-        <div class="empty-desc">Isi form di kiri, lalu klik <strong>Generate Brief</strong> untuk membuat JSON prompt yang siap digunakan.</div>
-        <div class="empty-hint">
-          💡 Output bisa langsung dicopy ke ChatGPT, DALL-E, atau Midjourney
-        </div>
+        <div class="empty-desc">Isi form di kiri, lalu klik Generate Brief untuk membuat JSON prompt.</div>
+        <div class="empty-hint">💡 Struktur JSON mengikuti format autofeed.id + gap branding lengkap</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Toast Container -->
-<!-- Export Modal -->
-<div class="modal-overlay" id="export_modal" onclick="handleModalOverlayClick(event)">
+<!-- MODAL -->
+<div class="modal-ov" id="modal_ov" onclick="handleOvClick(event)">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-header-left">
+    <div class="modal-head">
+      <div style="display:flex;align-items:center;gap:11px">
         <div class="modal-check">✓</div>
         <div>
-          <div class="modal-title">Brief siap dieksekusi</div>
-          <div class="modal-subtitle">
-            <span class="modal-subtitle-dot"></span>
-            COPIED TO CLIPBOARD · READY TO PASTE
-          </div>
+          <div class="modal-t">Brief siap dieksekusi</div>
+          <div class="modal-sub"><span class="modal-sub-dot"></span>COPIED TO CLIPBOARD · READY TO PASTE</div>
         </div>
       </div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <button class="modal-x" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-steps">
-      <div class="modal-step">
-        <div class="step-icon-box active"><span class="step-num-badge active">01</span>📋</div>
-        <div class="step-name active">Copy Brief</div>
-        <span class="step-sep">›</span>
+      <div class="mstep">
+        <div class="mstep-box on"><span class="mstep-num on">01</span>📋</div>
+        <div class="mstep-lbl on">Copy Brief</div>
+        <span class="mstep-arr">›</span>
       </div>
-      <div class="modal-step">
-        <div class="step-icon-box"><span class="step-num-badge">02</span>🤖</div>
-        <div class="step-name">Buka GPT</div>
-        <span class="step-sep">›</span>
+      <div class="mstep">
+        <div class="mstep-box"><span class="mstep-num">02</span>🤖</div>
+        <div class="mstep-lbl">Buka GPT</div>
+        <span class="mstep-arr">›</span>
       </div>
-      <div class="modal-step">
-        <div class="step-icon-box"><span class="step-num-badge">03</span>🖼️</div>
-        <div class="step-name">Mode Visual</div>
-        <span class="step-sep">›</span>
+      <div class="mstep">
+        <div class="mstep-box"><span class="mstep-num">03</span>🖼️</div>
+        <div class="mstep-lbl">Mode Visual</div>
+        <span class="mstep-arr">›</span>
       </div>
-      <div class="modal-step">
-        <div class="step-icon-box"><span class="step-num-badge">04</span>⚡</div>
-        <div class="step-name">Eksekusi</div>
+      <div class="mstep">
+        <div class="mstep-box"><span class="mstep-num">04</span>⚡</div>
+        <div class="mstep-lbl">Eksekusi</div>
       </div>
     </div>
     <div class="modal-detail">
-      <div class="modal-detail-label">DETAIL ALUR</div>
+      <div class="modal-dlbl">DETAIL ALUR</div>
       <ul class="modal-list">
-        <li><span class="li-num">1.</span><span>Klik tombol <strong>Buka AdsBrief AI</strong> di bawah</span></li>
-        <li><span class="li-num">2.</span><span>Aktifkan mode <strong>image generation</strong> di ChatGPT (icon gambar)</span></li>
-        <li><span class="li-num">3.</span><span>Upload foto produk yang ingin diolah AI <strong>(opsional)</strong></span></li>
-        <li><span class="li-num">4.</span><span>Tekan <code>Ctrl+V</code> — prompt sudah otomatis tersalin</span></li>
-        <li><span class="li-num">5.</span><span>Kirim pesan, biarkan AI render desainmu</span></li>
+        <li><span class="li-n">1.</span><span>Klik <strong>Buka AdsBrief AI</strong> di bawah</span></li>
+        <li><span class="li-n">2.</span><span>Aktifkan mode <strong>image generation</strong> di ChatGPT</span></li>
+        <li><span class="li-n">3.</span><span>Upload foto produk <strong>(opsional)</strong></span></li>
+        <li><span class="li-n">4.</span><span>Tekan <code>Ctrl+V</code> — prompt sudah otomatis tersalin</span></li>
+        <li><span class="li-n">5.</span><span>Kirim pesan, biarkan AI render desainmu</span></li>
       </ul>
     </div>
     <div class="modal-gpt-row">
-      <span class="modal-gpt-lbl">GPT URL</span>
-      <input class="modal-gpt-input" id="custom_gpt_url" type="text" placeholder="chatgpt.com/g/g-XXXXXXXX-adsbrief-ai" value="https://chatgpt.com/g/g-6a3fe2f7e8008191b5a089cb997ff36e-autoads">
-      <button class="modal-gpt-save" onclick="saveGptUrl()">Simpan</button>
+      <span class="mgpt-lbl">GPT URL</span>
+      <input class="mgpt-input" id="gpt_url" type="text" value="https://chatgpt.com/g/g-6a3fe2f7e8008191b5a089cb997ff36e-autoads" placeholder="chatgpt.com/g/g-XXXXXXXX">
+      <button class="mgpt-save" onclick="saveGptUrl()">Simpan</button>
     </div>
-    <div class="modal-footer">
-      <button class="btn-dismiss" onclick="closeModal()">Selesai</button>
-      <div class="modal-footer-right">
-        <button class="btn-open-chatgpt" onclick="openChatGPTPlain()">Buka ChatGPT ↗</button>
-        <button class="btn-open-gpt" id="btn_open_custom_gpt" onclick="openCustomGPT()">✦ Buka AdsBrief AI ↗</button>
+    <div class="modal-foot">
+      <button class="btn-dis" onclick="closeModal()">Selesai</button>
+      <div class="modal-fr">
+        <button class="btn-ochatgpt" onclick="openPlain()">Buka ChatGPT ↗</button>
+        <button class="btn-ogpt" id="btn_ogpt" onclick="openCustomGPT()">✦ Buka AdsBrief AI ↗</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="toast-container" id="toast_container"></div>
+<div class="toast-wrap" id="tw"></div>
 
 <script>
-// ─── State ───
-let currentJSON = null;
-let activeRatio = '4:5 (Portrait Feed)';
-let activeRatioLabel = '4:5';
+let cJSON=null,arRatio='4:5 (Portrait Feed)',arLabel='4:5';
 
-// ─── Tab Switching ───
-function switchTab(index, btn) {
-  document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + index).classList.add('active');
+// Tabs
+function switchTab(i,btn){
+  document.querySelectorAll('.form-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+i).classList.add('active');
   btn.classList.add('active');
-  document.querySelectorAll('.step-dot').forEach((d, i) => {
-    d.classList.toggle('active', i === index);
-    d.classList.toggle('done', i < index);
-  });
 }
 
-// ─── Toggle helpers ───
-function toggleSingle(btn, groupId) {
-  const group = document.getElementById(groupId) || btn.closest('.toggle-group');
-  group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  liveUpdate();
+// Toggles
+function togSingle(btn,gid){
+  document.getElementById(gid).querySelectorAll('.tog').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
 }
-function toggleMulti(btn) {
-  btn.classList.toggle('active');
-  liveUpdate();
-}
-function toggleRatio(btn) {
-  document.querySelectorAll('#aspect_ratio .ratio-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  const label = btn.querySelector('.ratio-label').textContent.trim();
-  activeRatioLabel = label.split('\n')[0];
-  const map = {'1:1':'1:1 (Square)','4:5':'4:5 (Portrait Feed)','9:16':'9:16 (Story/Reels)','16:9':'16:9 (Landscape Banner)'};
-  activeRatio = map[activeRatioLabel] || activeRatioLabel;
-  liveUpdate();
+function togMulti(btn){btn.classList.toggle('on')}
+function togRatio(btn){
+  document.querySelectorAll('#aspect_ratio .ratio-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const lbl=btn.querySelector('.ratio-lbl').textContent.trim();
+  arLabel=lbl.split('\n')[0];
+  const m={'1:1':'1:1 (Square)','4:5':'4:5 (Portrait Feed)','9:16':'9:16 (Story/Reels)','16:9':'16:9 (Landscape Banner)'};
+  arRatio=m[arLabel]||arLabel;
 }
 
-// ─── Color sync ───
-function syncColor(which) {
-  const val = document.getElementById('color_' + which).value;
-  document.getElementById('hex_' + which).value = val;
-  document.getElementById('swatch_' + which) && (document.getElementById('swatch_' + which).style.background = val);
-  const swatchEl = document.getElementById('color_' + which).closest('.color-swatch');
-  if (swatchEl) swatchEl.style.background = val;
-  liveUpdate();
+// Colors
+function syncC(w){
+  const v=document.getElementById('c'+w).value;
+  document.getElementById('h'+w).value=v;
+  document.getElementById('sw_'+w).style.background=v;
 }
-function syncHex(which) {
-  let val = document.getElementById('hex_' + which).value;
-  if (/^#[0-9a-fA-F]{6}$/.test(val)) {
-    document.getElementById('color_' + which).value = val;
-    const swatchEl = document.getElementById('color_' + which).closest('.color-swatch');
-    if (swatchEl) swatchEl.style.background = val;
-  }
-  liveUpdate();
+function syncH(w){
+  const v=document.getElementById('h'+w).value;
+  if(/^#[0-9a-fA-F]{6}$/.test(v)){document.getElementById('c'+w).value=v;document.getElementById('sw_'+w).style.background=v}
 }
 
-// ─── Tags ───
-function handleTagInput(e, containerId) {
-  if (e.key === 'Enter' || e.key === ',') {
+// Tags
+function addTag(e,wid){
+  if(e.key==='Enter'||e.key===','){
     e.preventDefault();
-    const input = e.target;
-    const val = input.value.trim().replace(/,$/, '');
-    if (!val) return;
-    const container = document.getElementById(containerId);
-    const tag = document.createElement('span');
-    tag.className = 'tag';
-    tag.innerHTML = val + ' <span class="tag-remove" onclick="removeTag(this)">×</span>';
-    container.insertBefore(tag, input);
-    input.value = '';
-    liveUpdate();
+    const inp=e.target,val=inp.value.trim().replace(/,$/,'');
+    if(!val)return;
+    const wrap=document.getElementById(wid);
+    const t=document.createElement('span');t.className='tag';
+    t.innerHTML=val+' <span class="tag-x" onclick="removeTag(this)">×</span>';
+    wrap.insertBefore(t,inp);inp.value='';
   }
 }
-function removeTag(el) {
-  el.closest('.tag').remove();
-  liveUpdate();
-}
-function getTagsFrom(containerId) {
-  const container = document.getElementById(containerId);
-  return Array.from(container.querySelectorAll('.tag')).map(t => t.textContent.trim().replace('×','').trim());
-}
+function removeTag(el){el.closest('.tag').remove()}
+function getTags(wid){return Array.from(document.getElementById(wid).querySelectorAll('.tag')).map(t=>t.textContent.trim().replace('×','').trim())}
 
-// ─── Photo label ───
-const photoLabels = ['Draft','Standard','HD','Ultra-8K','Photorealistic 16K'];
-function updatePhotoLabel(v) {
-  document.getElementById('photo_val').textContent = photoLabels[v-1] || 'Ultra-8K';
-}
+// Photo label
+const pLabels=['draft quality','standard quality','high quality, HD','ultra-realistic, 8k resolution','photorealistic, 16k hyperdetailed'];
+function updatePhoto(v){document.getElementById('photo_v').textContent=pLabels[v-1]||'ultra-realistic, 8k'}
 
-// ─── Get active toggle text ───
-function getActive(groupId) {
-  const el = document.getElementById(groupId);
-  if (!el) return '';
-  const active = el.querySelector('.toggle-btn.active');
-  return active ? active.textContent.trim() : '';
-}
-function getActives(groupId) {
-  const el = document.getElementById(groupId);
-  if (!el) return [];
-  return Array.from(el.querySelectorAll('.toggle-btn.active')).map(b => b.textContent.trim());
-}
+// Get active
+function getA(id){const el=document.getElementById(id);if(!el)return'';const a=el.querySelector('.tog.on');return a?a.textContent.trim():''}
+function getAs(id){const el=document.getElementById(id);if(!el)return[];return Array.from(el.querySelectorAll('.tog.on')).map(b=>b.textContent.trim())}
+function hexRgb(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)].join(',')}
 
-// ─── Live Update (debounced) ───
-let updateTimer;
-function liveUpdate() {
-  clearTimeout(updateTimer);
-  updateTimer = setTimeout(() => {
-    // just keeps form feel responsive, full generate on button
-  }, 100);
-}
+// Build JSON — struktur autofeed + gap AdsBrief
+function buildJSON(){
+  const hp=document.getElementById('hp').value||'#0c3d4f';
+  const hs=document.getElementById('hs').value||'#8ce0ff';
+  const ha=document.getElementById('ha').value||'#e8b84b';
+  const pv=parseInt(document.getElementById('photorealism').value);
+  const pStr=pLabels[pv-1]||'ultra-realistic, 8k resolution';
+  const abOn=getA('ab_on').includes('Yes');
+  const imgCount=getA('img_count');
+  const imgNum=imgCount.includes('0')?0:imgCount.includes('1')?1:imgCount.includes('2')?2:3;
+  const uiStyle=getA('ui_style');
+  const ctaTxt=document.getElementById('cta_text').value||'';
+  const uiElem=uiStyle==='None'?`IMPORTANT: Add a premium modern CTA button displaying: '${ctaTxt}'. Make it prominent.`:`Incorporate minimalist floating ${uiStyle==='Glassmorphism Cards'?'glassmorphism UI cards':uiStyle==='Data Dashboard'?'data dashboard elements':'feature badges'}, feature icons around the product.\nIMPORTANT: Add a premium modern CTA (Call-to-Action) button displaying: '${ctaTxt}'. Make it prominent to encourage user interaction.`;
 
-// ─── Build JSON Object ───
-function buildJSON() {
-  const hex_p = document.getElementById('hex_primary').value || '#0c3d4f';
-  const hex_s = document.getElementById('hex_secondary').value || '#ffffff';
-  const hex_a = document.getElementById('hex_accent').value || '#e8b84b';
-
-  const photoVal = parseInt(document.getElementById('photorealism').value);
-  const photoStr = ['draft quality','standard quality','high quality, HD','ultra-realistic, 8K resolution','photorealistic, 16K, hyperdetailed'][photoVal-1] || 'ultra-realistic, 8K resolution';
-
-  const abEnabled = getActive('ab_enabled').includes('Yes');
-
-  return {
-    task_type: "commercial_banner_generation",
-    system_directive: "You are an elite Commercial Art Director. Generate a premium advertising banner based on the specifications below. Ensure all brand rules are strictly followed.",
-    model_parameters: {
-      aspect_ratio: activeRatio,
-      style_preset: getActive('aesthetic'),
-      quality: "high",
-      photorealism: photoStr,
-      file_type: getActive('file_type'),
-      resolution: getActive('resolution'),
-      background: getActive('bg_type')
+  return{
+    task_type:"commercial_banner_generation",
+    system_directive:"You are an elite Commercial Art Director and Graphic Designer. Create a premium product promotional banner based on the exact specifications below. Ensure the provided product image(s) are seamlessly integrated.",
+    model_parameters:{
+      aspect_ratio:arRatio,
+      style_preset:getA('style_preset'),
+      quality:getA('quality').toLowerCase(),
+      photorealism:pStr
     },
-    brand_identity: {
-      brand_name: document.getElementById('brand_name').value || '',
-      brand_voice: getActive('brand_voice'),
-      color_palette: {
-        primary_accent: hex_p,
-        secondary_background: hex_s,
-        cta_accent: hex_a,
-        usage_rule: `Primary accent max 30% canvas. CTA uses ${hex_a}. Background dominates at ${hex_s}.`
+    prompt_structure:{
+      subject:document.getElementById('subject').value||`A professional promotional banner for ${document.getElementById('brand_name').value||'[Brand]'}`,
+      branding_elements:{
+        brand_name:document.getElementById('brand_name').value||'',
+        headline:document.getElementById('headline').value||'',
+        subheadline:document.getElementById('subheadline').value||'',
+        description:document.getElementById('description').value||'',
+        call_to_action:ctaTxt
       },
-      typography_system: {
-        headline_font: document.getElementById('font_display').value,
-        body_font: document.getElementById('font_body').value,
-        size_scale: { h1: "64px", h2: "32px", body: "16px", cta: "20px" },
-        letter_spacing: { headline: "-0.03em", cta: "0.08em uppercase" }
+      product_visual_layout:{
+        expected_images_count:imgNum,
+        composition_style:getA('composition'),
+        placement_rule:getA('placement')==='Center Dominant'?'Place the main product composition at the visual CENTER as the dominant focal point. Surround with negative space and balance typography above/below or in subtle overlay zones.':getA('placement'),
+        integration_and_blending:document.getElementById('blending').value,
+        strict_multi_image_rules:imgNum>1?["Use the uploaded product images as hero subjects.","POSITION LOCK: The composition MUST strictly follow the requested visual positioning."]:["Use the uploaded product image as the single hero subject.","POSITION LOCK: The composition MUST strictly follow the requested visual positioning."]
       },
-      brand_consistency: {
-        logo_safe_zone: document.getElementById('logo_safe_zone').value + "px minimum margin",
-        forbidden_elements: getTagsFrom('forbidden_container')
+      information_layout:{
+        features_to_highlight:getTags('feat_wrap'),
+        ui_elements:uiElem
+      },
+      visual_style_details:{
+        color_palette:{
+          primary_accent:hp,
+          secondary_background:hs,
+          cta_accent:ha,
+          harmony:document.getElementById('color_harmony').value
+        },
+        lighting_setup:getA('lighting'),
+        aesthetic_keywords:document.getElementById('aesthetic_kw').value
+      },
+      typography_instructions:document.getElementById('typo_note').value,
+      composition_rules:getAs('comp_rules')
+    },
+    // AdsBrief extended fields
+    brand_identity:{
+      brand_voice:getA('brand_voice'),
+      typography_system:{
+        headline_font:document.getElementById('font_display').value,
+        body_font:document.getElementById('font_body').value,
+        size_scale:{h1:"64px",h2:"32px",body:"16px",cta:"20px"},
+        letter_spacing:{headline:"-0.03em",cta:"0.08em uppercase"}
+      },
+      brand_consistency:{
+        logo_safe_zone:document.getElementById('logo_sz').value+"px minimum margin",
+        cta_design:{shape:getA('cta_shape').toLowerCase(),fill:hp,text_color:"#ffffff",icon:getA('cta_icon'),shadow:`0 8px 32px rgba(${hexRgb(hp)},0.35)`},
+        forbidden_elements:getTags('forb_wrap')
       }
     },
-    ad_copy: {
-      headline: document.getElementById('headline').value || '',
-      subheadline: document.getElementById('subheadline').value || '',
-      call_to_action: document.getElementById('cta_text').value || '',
-      features_to_highlight: getTagsFrom('features_container')
+    target_audience:{
+      demographic:document.getElementById('demographic').value,
+      age_range:`${document.getElementById('age_min').value}–${document.getElementById('age_max').value}`,
+      psychographic:document.getElementById('psychographic').value,
+      platform_context:getA('platform'),
+      scroll_stop_priority:getA('scroll_stop')
     },
-    cta_design_spec: {
-      shape: getActive('cta_shape').toLowerCase(),
-      fill: hex_p,
-      text_color: "#ffffff",
-      icon: getActive('cta_icon'),
-      shadow: `0 8px 32px rgba(${hexToRgb(hex_p)},0.35)`,
-      hover_state: "scale 1.05, shadow elevation +4"
+    output_format:{
+      file_type:getA('file_type'),
+      background:getA('bg_type'),
+      resolution:getA('resolution'),
+      depth_of_field:getA('dof')
     },
-    visual_direction: {
-      composition_style: getActive('composition'),
-      lighting_setup: getActive('lighting'),
-      aesthetic_keywords: getActive('aesthetic') + ", modern lifestyle feel, approachable",
-      depth_composition: {
-        foreground_elements: ["CTA button", "feature badges"],
-        midground_elements: ["product hero"],
-        background_elements: ["color wash", "subtle texture"],
-        depth_of_field: getActive('dof'),
-        z_index_hierarchy: [1, 2, 3]
-      }
-    },
-    target_audience: {
-      demographic: document.getElementById('demographic').value,
-      age_range: `${document.getElementById('age_min').value}–${document.getElementById('age_max').value}`,
-      psychographic: document.getElementById('psychographic').value,
-      platform_context: getActive('platform'),
-      scroll_stop_priority: getActive('scroll_stop')
-    },
-    motion_layer: {
-      animation_style: getActive('animation_style'),
-      export_formats: getActives('motion_format'),
-    },
-    output_format: {
-      file_type: getActive('file_type'),
-      export_layers: getActives('export_layers'),
-      dpi: getActive('resolution').split(' ')[0]
-    },
-    ...(abEnabled && {
-      variant_generation: {
-        enabled: true,
-        variants: [
-          { id: "A", layout: "centered", cta_color: hex_p },
-          { id: "B", layout: "left-aligned", cta_color: hex_a }
-        ],
-        auto_winner_metric: getActive('ab_metric')
-      }
-    }),
-    negative_prompt: "ugly, deformed, blurry, distorted, bad typography, warped, misspelled, cluttered, watermarks, low resolution, " + (document.getElementById('neg_prompt_extra').value || '')
+    ...(abOn&&{variant_generation:{enabled:true,variants:[{id:"A",layout:"centered",cta_color:hp},{id:"B",layout:"left-aligned",cta_color:ha}],auto_winner_metric:getA('ab_metric')}}),
+    negative_prompt:document.getElementById('neg_prompt').value
   };
 }
 
-function hexToRgb(hex) {
-  const r = parseInt(hex.slice(1,3),16);
-  const g = parseInt(hex.slice(3,5),16);
-  const b = parseInt(hex.slice(5,7),16);
-  return `${r},${g},${b}`;
-}
-
-// ─── Generate ───
-function generateJSON() {
-  const btn = document.getElementById('btn_generate');
+// Generate
+function generateJSON(){
+  const btn=document.getElementById('btn_gen');
   btn.classList.add('loading');
-  document.getElementById('gen_icon').innerHTML = '<div class="spinner"></div>';
-  document.getElementById('gen_text').textContent = 'Generating...';
-
-  const dot = document.getElementById('status_dot');
-  dot.className = 'status-dot generating';
-  document.getElementById('status_text').textContent = 'Generating...';
-
-  setTimeout(() => {
-    currentJSON = buildJSON();
-    renderOutput(currentJSON);
-
+  document.getElementById('gen_ic').innerHTML='<div class="spinner"></div>';
+  document.getElementById('gen_tx').textContent='Generating...';
+  document.getElementById('sdot').className='sdot gen';
+  document.getElementById('stxt').textContent='Generating...';
+  setTimeout(()=>{
+    cJSON=buildJSON();
+    renderOutput(cJSON);
     btn.classList.remove('loading');
-    document.getElementById('gen_icon').textContent = '✦';
-    document.getElementById('gen_text').textContent = 'Re-generate';
-
-    dot.className = 'status-dot ready';
-    document.getElementById('status_text').textContent = 'Brief ready';
-
-    showToast('✦ Brief berhasil digenerate!', 'success');
-  }, 800);
+    document.getElementById('gen_ic').textContent='✦';
+    document.getElementById('gen_tx').textContent='Re-generate';
+    document.getElementById('sdot').className='sdot ready';
+    document.getElementById('stxt').textContent='Brief ready';
+    toast('✦ Brief berhasil digenerate!','ok');
+  },700);
 }
 
-// ─── Render Output ───
-function renderOutput(data) {
-  const body = document.getElementById('output_body');
-  const jsonStr = JSON.stringify(data, null, 2);
-
-  body.innerHTML = `
+// Render
+function renderOutput(data){
+  const body=document.getElementById('out_body');
+  const js=JSON.stringify(data,null,2);
+  const hp=data.prompt_structure.visual_style_details.color_palette.primary_accent;
+  const hs=data.prompt_structure.visual_style_details.color_palette.secondary_background;
+  const ha=data.prompt_structure.visual_style_details.color_palette.cta_accent;
+  body.innerHTML=`
     <div class="json-block">
-      <div class="json-block-header">
-        <span class="json-block-title">ads_brief.json</span>
-        <button class="copy-line-btn" onclick="copyJSON()" id="copy_inline">Copy</button>
+      <div class="json-header">
+        <span class="json-title">ads_brief.json</span>
+        <button class="copy-btn" onclick="copyJSON()" id="cinl">Copy</button>
       </div>
-      <div class="json-code">${syntaxHighlight(jsonStr)}</div>
+      <div class="json-code">${synHL(js)}</div>
     </div>
-
-    <div class="preview-card">
-      <div class="preview-card-title">Quick Summary</div>
-      <div class="preview-grid">
-        ${summaryItem('Brand', data.brand_identity.brand_name || '—')}
-        ${summaryItem('Platform', data.target_audience.platform_context)}
-        ${summaryItem('Ratio', data.model_parameters.aspect_ratio)}
-        ${colorSummaryItem('Primary', data.brand_identity.color_palette.primary_accent)}
-        ${colorSummaryItem('Background', data.brand_identity.color_palette.secondary_background)}
-        ${colorSummaryItem('CTA Accent', data.brand_identity.color_palette.cta_accent)}
-        ${summaryItem('Audience', data.target_audience.age_range + ' · ' + data.target_audience.demographic)}
-        ${summaryItem('Hook Strategy', data.target_audience.scroll_stop_priority)}
-        ${summaryItem('A/B Variants', data.variant_generation ? '✓ Enabled' : 'Disabled')}
+    <div class="sum-card">
+      <div class="sum-title">Quick Summary</div>
+      <div class="sum-grid">
+        ${si('Brand',data.prompt_structure.branding_elements.brand_name||'—')}
+        ${si('Headline',data.prompt_structure.branding_elements.headline||'—')}
+        ${si('Platform',data.target_audience.platform_context)}
+        ${sc('Primary',hp)}${sc('BG',hs)}${sc('CTA Accent',ha)}
+        ${si('Ratio',data.model_parameters.aspect_ratio)}
+        ${si('Audience',data.target_audience.age_range+' · '+data.target_audience.demographic)}
+        ${si('Hook',data.target_audience.scroll_stop_priority)}
       </div>
     </div>
-
-    <div class="chatgpt-banner">
-      <div class="chatgpt-info">
-        <div class="chatgpt-logo">🤖</div>
-        <div class="chatgpt-text">
-          <strong>Export ke ChatGPT</strong><br>
-          Copy prompt JSON ini dan paste ke ChatGPT dengan model DALL-E atau GPT-4o untuk generate image langsung.
-        </div>
+    <div class="gpt-banner">
+      <div style="display:flex;align-items:center;gap:11px">
+        <div class="gpt-logo">🤖</div>
+        <div class="gpt-text"><strong>Export ke AdsBrief AI</strong><br>Prompt ter-copy otomatis. Buka GPT lalu Ctrl+V untuk generate.</div>
       </div>
-      <button class="btn-chatgpt" onclick="exportToChatGPT()">Buka ChatGPT ↗</button>
-    </div>
-
-    <div class="mj-banner">
-      <div class="chatgpt-info">
-        <div class="mj-logo">✦</div>
-        <div class="chatgpt-text">
-          <strong>Format Midjourney</strong><br>
-          Convert JSON ini ke format /imagine prompt yang dioptimalkan untuk Midjourney v6.
-        </div>
-      </div>
-      <button class="btn-mj" onclick="exportToMidjourney()">Convert ↗</button>
-    </div>
-  `;
-}
-
-function summaryItem(label, value) {
-  return `<div class="preview-item">
-    <div class="preview-item-label">${label}</div>
-    <div class="preview-item-value">${value || '—'}</div>
-  </div>`;
-}
-function colorSummaryItem(label, hex) {
-  return `<div class="preview-item">
-    <div class="preview-item-label">${label}</div>
-    <div class="preview-item-value">
-      <span class="color-preview-dot" style="background:${hex};"></span>${hex}
-    </div>
-  </div>`;
-}
-
-// ─── Syntax Highlight ───
-function syntaxHighlight(json) {
-  return json
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/("(\\u[\da-fA-F]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
-      let cls = 'jn'; // number
-      if (/^"/.test(match)) {
-        if (/:$/.test(match)) cls = 'jk'; // key
-        else cls = 'js'; // string
-      } else if (/true|false/.test(match)) cls = 'jb';
-      else if (/null/.test(match)) cls = 'jnu';
-      return `<span class="${cls}">${match}</span>`;
-    })
-    .replace(/([{}[\],])/g, '<span class="jp">$1</span>');
-}
-
-// ─── Actions ───
-function copyJSON() {
-  if (!currentJSON) { showToast('Generate brief dulu!', 'error'); return; }
-  navigator.clipboard.writeText(JSON.stringify(currentJSON, null, 2)).then(() => {
-    const btn = document.getElementById('copy_btn');
-    if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => btn.innerHTML = '<span>⎘</span> Copy JSON', 1500); }
-    const inl = document.getElementById('copy_inline');
-    if (inl) { inl.textContent = 'Copied!'; inl.classList.add('copied'); setTimeout(() => { inl.textContent = 'Copy'; inl.classList.remove('copied'); }, 1500); }
-    showToast('JSON copied ke clipboard!', 'success');
-  });
-}
-
-// ─── Modal & ChatGPT Export ───
-let gptUrl = localStorage.getItem('adsbrief_gpt_url') || '';
-
-function buildPrompt() {
-  return `Kamu adalah AI Art Director dan Commercial Graphic Designer profesional.\n\nGenerate sebuah banner iklan berdasarkan brief JSON berikut. Ikuti SEMUA spesifikasi secara ketat.\n\n${JSON.stringify(currentJSON, null, 2)}\n\nOutput:\n1. Deskripsi visual banner (layout, warna, tipografi)\n2. Prompt DALL-E siap pakai\n3. Brand compliance checklist`;
-}
-
-function fallbackCopy(text) {
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
-  document.body.appendChild(ta);
-  ta.focus(); ta.select();
-  try { document.execCommand('copy'); } catch(e) {}
-  document.body.removeChild(ta);
-}
-
-function copyToClipboard(text) {
-  return navigator.clipboard && navigator.clipboard.writeText
-    ? navigator.clipboard.writeText(text).catch(() => { fallbackCopy(text); })
-    : Promise.resolve(fallbackCopy(text));
-}
-
-function exportToChatGPT() {
-  if (!currentJSON) { showToast('Generate brief dulu!', 'error'); return; }
-  toggleExport();
-  const prompt = buildPrompt();
-  copyToClipboard(prompt).then(() => {
-    // Restore GPT URL from storage
-    const saved = localStorage.getItem('adsbrief_gpt_url') || 'https://chatgpt.com/g/g-6a3fe2f7e8008191b5a089cb997ff36e-autoads';
-    const input = document.getElementById('custom_gpt_url');
-    if (input) input.value = saved;
-    const gpBtn = document.getElementById('btn_open_custom_gpt');
-    if (gpBtn) gpBtn.disabled = !saved;
-    // Open modal
-    document.getElementById('export_modal').classList.add('open');
-  });
-}
-
-function openModal() {
-  document.getElementById('export_modal').classList.add('open');
-}
-
-function closeModal() {
-  document.getElementById('export_modal').classList.remove('open');
-}
-
-function handleModalOverlayClick(e) {
-  if (e.target === document.getElementById('export_modal')) closeModal();
-}
-
-function openChatGPTPlain() {
-  closeModal();
-  setTimeout(() => window.open('https://chatgpt.com/', '_blank'), 100);
-}
-
-function openCustomGPT() {
-  const url = document.getElementById('custom_gpt_url').value.trim();
-  if (!url) { showToast('Masukkan URL Custom GPT dulu!', 'error'); return; }
-  const full = url.startsWith('http') ? url : 'https://' + url;
-  closeModal();
-  setTimeout(() => window.open(full, '_blank'), 100);
-}
-
-function saveGptUrl() {
-  const val = document.getElementById('custom_gpt_url').value.trim();
-  if (!val) { showToast('URL tidak boleh kosong!', 'error'); return; }
-  localStorage.setItem('adsbrief_gpt_url', val);
-  const btn = document.getElementById('btn_open_custom_gpt');
-  if (btn) btn.disabled = false;
-  showToast('✓ URL Custom GPT tersimpan!', 'success');
-}
-
-// Load saved GPT URL on page load
-document.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('adsbrief_gpt_url') || 'https://chatgpt.com/g/g-6a3fe2f7e8008191b5a089cb997ff36e-autoads';
-  const input = document.getElementById('custom_gpt_url');
-  if (input && saved) {
-    input.value = saved;
-    const btn = document.getElementById('btn_open_custom_gpt');
-    if (btn) btn.disabled = false;
-  }
-});
-
-// Close modal on Escape
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
-});
-
-function exportToMidjourney() {
-  if (!currentJSON) { showToast('Generate brief dulu!', 'error'); return; }
-  const d = currentJSON;
-  const mj = `/imagine prompt: ${d.ad_copy.headline}, ${d.ad_copy.subheadline}, professional advertising banner for ${d.brand_identity.brand_name}, ${d.visual_direction.aesthetic_keywords}, color palette ${d.brand_identity.color_palette.primary_accent} and ${d.brand_identity.color_palette.secondary_background}, ${d.visual_direction.composition_style} composition, ${d.visual_direction.lighting_setup} lighting, ${d.visual_direction.depth_composition.depth_of_field}, ultra-detailed, ${d.model_parameters.photorealism}, commercial photography style --ar ${activeRatioLabel.replace(':','/')} --v 6 --style raw --q 2`;
-  navigator.clipboard.writeText(mj).then(() => {
-    showToast('Midjourney prompt di-copy!', 'success');
-  });
-  toggleExport();
-}
-
-function downloadJSON() {
-  if (!currentJSON) { showToast('Generate brief dulu!', 'error'); return; }
-  const blob = new Blob([JSON.stringify(currentJSON, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `adsbrief_${(currentJSON.brand_identity.brand_name || 'output').replace(/\s+/g,'_').toLowerCase()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('File JSON didownload!', 'success');
-  toggleExport();
-}
-
-function toggleExport() {
-  document.getElementById('export_dropdown').classList.toggle('open');
-}
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('.export-menu')) {
-    document.getElementById('export_dropdown').classList.remove('open');
-  }
-});
-
-function resetForm() {
-  if (!confirm('Reset semua field?')) return;
-  document.querySelectorAll('.field-input').forEach(el => {
-    if (el.tagName === 'SELECT') el.selectedIndex = 0;
-    else if (el.type !== 'range' && el.type !== 'color') el.value = '';
-  });
-  currentJSON = null;
-  document.getElementById('output_body').innerHTML = document.querySelector('.empty-state') ? '' : `
-    <div class="empty-state" id="empty_state">
-      <div class="empty-icon">⬡</div>
-      <div class="empty-title">Brief belum digenerate</div>
-      <div class="empty-desc">Isi form di kiri, lalu klik <strong>Generate Brief</strong></div>
-      <div class="empty-hint">💡 Output bisa langsung dicopy ke ChatGPT atau Midjourney</div>
+      <button class="btn-gpt" onclick="exportGPT()">Buka AdsBrief AI ↗</button>
     </div>`;
-  document.getElementById('status_dot').className = 'status-dot';
-  document.getElementById('status_text').textContent = 'Menunggu brief...';
-  document.getElementById('gen_text').textContent = 'Generate Brief';
-  showToast('Form direset.', 'success');
 }
 
-function showDocs() {
-  showToast('Docs coming soon! 🚀', 'success');
+function si(l,v){return`<div class="sum-item"><div class="sum-lbl">${l}</div><div class="sum-val">${v||'—'}</div></div>`}
+function sc(l,h){return`<div class="sum-item"><div class="sum-lbl">${l}</div><div class="sum-val"><span class="cdot" style="background:${h}"></span>${h}</div></div>`}
+
+function synHL(json){
+  return json.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/("(\\u[\da-fA-F]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,m=>{
+      let c='jn';
+      if(/^"/.test(m)){c=/:$/.test(m)?'jk':'js'}
+      else if(/true|false/.test(m))c='jb';
+      else if(/null/.test(m))c='jp';
+      return`<span class="${c}">${m}</span>`;
+    }).replace(/([{}[\],])/g,'<span class="jp">$1</span>');
 }
 
-// ─── Toast ───
-function showToast(msg, type = 'success') {
-  const container = document.getElementById('toast_container');
-  const icons = { success: '✓', error: '✕' };
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  toast.innerHTML = `<span class="toast-icon">${icons[type]}</span> ${msg}`;
-  container.appendChild(toast);
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(20px)';
-    toast.style.transition = 'all 0.2s';
-    setTimeout(() => toast.remove(), 200);
-  }, 2500);
+// Copy
+function copyJSON(){
+  if(!cJSON){toast('Generate brief dulu!','err');return}
+  const txt=JSON.stringify(cJSON,null,2);
+  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).catch(()=>fbCopy(txt)).then(()=>{
+    ['copy_btn','cinl'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent='✓ Copied!';b.classList.add('done');setTimeout(()=>{b.textContent=id==='copy_btn'?'⎘ Copy JSON':'Copy';b.classList.remove('done')},1500)}});
+    toast('JSON copied!','ok');
+  });
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(()=>{['copy_btn','cinl'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent='✓ Copied!';b.classList.add('done');setTimeout(()=>{b.textContent=id==='copy_btn'?'⎘ Copy JSON':'Copy';b.classList.remove('done')},1500)}});toast('JSON copied!','ok')});
+}
+
+function fbCopy(t){const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;top:-9999px;left:-9999px;opacity:0';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta)}
+
+function buildPrompt(){
+  return`Kamu adalah AI Art Director dan Commercial Designer profesional.\n\nGenerate banner iklan berdasarkan JSON brief berikut. Ikuti SEMUA spesifikasi — brand identity, color palette, typography, CTA, visual direction, target audience.\n\n${JSON.stringify(cJSON,null,2)}\n\nOutput:\n1. Generate gambar banner LANGSUNG menggunakan DALL-E\n2. Brand compliance checklist singkat\n3. Saran revisi jika diperlukan`;
+}
+
+function exportGPT(){
+  if(!cJSON){toast('Generate brief dulu!','err');return}
+  togExp();
+  const p=buildPrompt();
+  const saved=localStorage.getItem('adsbrief_gpt_url')||'https://chatgpt.com/g/g-6a3fe2f7e8008191b5a089cb997ff36e-autoads';
+  document.getElementById('gpt_url').value=saved;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(p).then(()=>{document.getElementById('modal_ov').classList.add('open')}).catch(()=>{fbCopy(p);document.getElementById('modal_ov').classList.add('open')});
+  }else{fbCopy(p);document.getElementById('modal_ov').classList.add('open')}
+}
+
+function exportMJ(){
+  if(!cJSON){toast('Generate brief dulu!','err');return}
+  togExp();
+  const d=cJSON;const ps=d.prompt_structure;
+  const mj=`/imagine prompt: ${ps.branding_elements.headline}, ${ps.branding_elements.subheadline}, professional advertising banner for ${ps.branding_elements.brand_name}, ${ps.visual_style_details&&ps.visual_style_details.aesthetic_keywords||''}, color palette ${ps.visual_style_details.color_palette.primary_accent} and ${ps.visual_style_details.color_palette.secondary_background}, ${ps.visual_style_details.lighting_setup} lighting, commercial photography style, ultra-detailed, ${d.model_parameters.photorealism} --ar ${arLabel.replace(':','/')} --v 6 --style raw --q 2`;
+  if(navigator.clipboard)navigator.clipboard.writeText(mj).then(()=>toast('Midjourney prompt di-copy!','ok'));
+  else{fbCopy(mj);toast('Midjourney prompt di-copy!','ok')}
+}
+
+function dlJSON(){
+  if(!cJSON){toast('Generate brief dulu!','err');return}
+  togExp();
+  const b=new Blob([JSON.stringify(cJSON,null,2)],{type:'application/json'});
+  const u=URL.createObjectURL(b);const a=document.createElement('a');
+  a.href=u;a.download=`adsbrief_${(cJSON.prompt_structure.branding_elements.brand_name||'output').replace(/\s+/g,'_').toLowerCase()}.json`;
+  a.click();URL.revokeObjectURL(u);toast('Downloaded!','ok');
+}
+
+function togExp(){document.getElementById('exp_drop').classList.toggle('open')}
+document.addEventListener('click',e=>{if(!e.target.closest('.exp-menu'))document.getElementById('exp_drop').classList.remove('open')});
+
+function closeModal(){document.getElementById('modal_ov').classList.remove('open')}
+function handleOvClick(e){if(e.target===document.getElementById('modal_ov'))closeModal()}
+function openPlain(){closeModal();setTimeout(()=>window.open('https://chatgpt.com/','_blank'),100)}
+function openCustomGPT(){
+  const u=document.getElementById('gpt_url').value.trim();
+  if(!u){toast('Masukkan URL GPT!','err');return}
+  closeModal();
+  setTimeout(()=>window.open(u.startsWith('http')?u:'https://'+u,'_blank'),100);
+}
+function saveGptUrl(){
+  const v=document.getElementById('gpt_url').value.trim();
+  if(!v){toast('URL kosong!','err');return}
+  localStorage.setItem('adsbrief_gpt_url',v);
+  toast('✓ URL GPT tersimpan!','ok');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+function resetForm(){
+  if(!confirm('Reset semua field?'))return;
+  document.querySelectorAll('.fi').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else if(el.type!=='range'&&el.type!=='color')el.value=''});
+  cJSON=null;
+  document.getElementById('out_body').innerHTML=`<div class="empty"><div class="empty-icon">⬡</div><div class="empty-title">Brief belum digenerate</div><div class="empty-desc">Isi form di kiri lalu klik Generate Brief.</div></div>`;
+  document.getElementById('sdot').className='sdot';
+  document.getElementById('stxt').textContent='Menunggu brief...';
+  document.getElementById('gen_tx').textContent='Generate Brief';
+  toast('Form direset.','ok');
+}
+
+function toast(msg,type='ok'){
+  const c=document.getElementById('tw');
+  const t=document.createElement('div');t.className=`toast ${type}`;
+  t.innerHTML=`<span>${type==='ok'?'✓':'✕'}</span> ${msg}`;
+  c.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(16px)';t.style.transition='all 0.2s';setTimeout(()=>t.remove(),200)},2500);
 }
 </script>
 </body>
